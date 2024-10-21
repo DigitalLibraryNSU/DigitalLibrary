@@ -37,6 +37,13 @@
     },
     "author": {
       "type": "string"
+    },
+    "book": {
+      "allowedTypes": [
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

@@ -508,6 +508,7 @@ export interface ApiBookBook extends Struct.CollectionTypeSchema {
       'api::collection.collection'
     >;
     author: Schema.Attribute.String;
+    book: Schema.Attribute.Media<'files'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

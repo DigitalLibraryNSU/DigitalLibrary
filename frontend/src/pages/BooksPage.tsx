@@ -3,6 +3,7 @@ import {Header} from "../components/header.tsx";
 import BookList from "../components/bookList.tsx";
 import {useStore} from "../Store/StoreContext.tsx";
 import React from "react";
+import {observer} from "mobx-react-lite";
 
 const { Content} = Layout;
 
@@ -49,7 +50,7 @@ const { Content} = Layout;
 //
 
 
-const BooksPage: React.FC = () => {
+const BooksPage: React.FC = observer(() => {
     const { booksStore } = useStore();
 
     if (booksStore.isLoading) {
@@ -75,5 +76,6 @@ const BooksPage: React.FC = () => {
         </Layout>
     )
 }
+)
 
 export default BooksPage;

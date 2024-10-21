@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite";
 const BookPage: React.FC = observer(() => {
     const { bookId } = useParams<{ bookId: string }>();
     const { bookStore } = useStore();
-    console.log(bookId)
+
     useEffect(() => {
         if (bookId) {
             bookStore.fetchBook(bookId);  // Загружаем книгу по id
@@ -27,7 +27,23 @@ const BookPage: React.FC = observer(() => {
         return <div>No book found</div>;
     }
 
-    const { name, author, description } = bookStore.book;  // Разворачиваем данные книги
+    const downloadFile = async () => {
+        try {
+            const response = await fetch(bookStore.book.documentUrl);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const fileData = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(fileData);
+            link.download = bookStore.book.name;
+            console.log(bookStore.book.documentName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Failed to download file.');
+        }
+    };
 
     return (
         <StyledBookPage>
@@ -37,14 +53,18 @@ const BookPage: React.FC = observer(() => {
                     <img src={bookStore.book.image} alt={bookStore.book.name} />
                 </div>
                 <div className="book-details">
-                    <h1 className="book-title">{name}</h1>
-                    <h3 className="book-author">By {author}</h3>
-                    <p className="book-description">{description}</p>
+                    <h1 className="book-title">{bookStore.book.name}</h1>
+                    <h3 className="book-author">By {bookStore.book.author}</h3>
+                    <p className="book-description">{bookStore.book.description}</p>
+                    <button className="book-download" onClick={downloadFile}>
+                        Download book
+                    </button>
                 </div>
             </div>
         </StyledBookPage>
     );
 });
+
 
 const StyledBookPage = styled.div`
     padding: 20px;
@@ -85,6 +105,7 @@ const StyledBookPage = styled.div`
         font-family: Broadleaf;
         flex: 2;
         display: flex;
+        align-items: center;
         flex-direction: column;
     }
 
@@ -139,7 +160,15 @@ const StyledBookPage = styled.div`
         }
     }
 
-    /* Адаптивность для мобильных устройств */
+    .book-download {
+        margin-top: 40px;
+        color: white;
+        background: black;
+        height: 40px;
+        width: 130px;
+        border-radius: 10px;
+    }
+    
     @media (max-width: 576px) {
         .book-container {
             padding: 15px;

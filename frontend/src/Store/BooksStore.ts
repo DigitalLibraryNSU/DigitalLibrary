@@ -1,8 +1,21 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
 
+interface Book {
+    id: string;
+    documentId: string;
+    name: string;
+    description: string;
+    author: string;
+    image: string;
+    documentName: string;
+    documentMime: string;
+    documentUrl: string;
+}
+
+
 class BooksStore {
-    books = [];
+    books: Book[] = [];
     isLoading = false;
     error = null;
 
@@ -51,7 +64,7 @@ class BooksStore {
                 id: book.id,//number
                 documentId: book.documentId,//string
                 name: book.name,//string
-                description: book.description || '',//string
+                description: book.description.slice(0, 200)+"..." || '',//string
                 author: book.author || '',//string
                 image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
             }));
@@ -77,7 +90,7 @@ class BooksStore {
                 id: book.id,
                 documentId: book.documentId,
                 name: book.name,
-                description: book.description || '',
+                description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
             }));
@@ -96,14 +109,15 @@ class BooksStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books`);
+            const response = await axios.get(`http://localhost:1337/api/books?populate=*`);
             console.log("API response:", response);
             this.books = response.data.data.map((book: any) => ({
                 id: book.id,
                 documentId: book.documentId,
                 name: book.name,
-                description: book.description || '',
+                description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
+                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -121,14 +135,15 @@ class BooksStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books`);
+            const response = await axios.get(`http://localhost:1337/api/books?populate=*`);
             console.log("API response:", response);
             this.books = response.data.data.map((book: any) => ({
                 id: book.id,
                 documentId: book.documentId,
                 name: book.name,
-                description: book.description.slice(150) || '',
+                description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
+                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {

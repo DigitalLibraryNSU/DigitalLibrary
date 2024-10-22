@@ -1,7 +1,7 @@
 import { Header } from "../components/header.tsx";
 import { Layout } from "antd";
 import "../styles/MainPageStyles.css";
-import BlackCard from "../components/blackCollectionCard.tsx";
+import BlackCollectionCard from "../components/blackCollectionCard.tsx";
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
@@ -24,7 +24,6 @@ export const MainPage: React.FC = observer(() => {
 
     useEffect(() => {
         if (!collectionsStore.isLoading && collectionsStore.collections.length > 0) {
-            // Получаем 3 случайные коллекции
             const shuffledCollections = [...collectionsStore.collections].sort(() => 0.5 - Math.random());
             const selectedCollections = shuffledCollections.slice(0, 3);
             setRandomCollections(selectedCollections);
@@ -48,7 +47,7 @@ export const MainPage: React.FC = observer(() => {
                 </div>
                 <div className="cards">
                     {randomCollections.map((collection: Collection) => (
-                            <BlackCard
+                            <BlackCollectionCard
                                 key={collection.id}
                                 title={collection.name}
                                 description={collection.description}

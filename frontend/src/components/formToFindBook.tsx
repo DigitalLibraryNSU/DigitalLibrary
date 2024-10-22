@@ -3,7 +3,6 @@ import { useStore } from "../Store/StoreContext.tsx";
 import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-    // Состояние для хранения выбранной кнопки и введенного текста
     const [activeField, setActiveField] = useState('');
     const [inputValue, setInputValue] = useState('');
     const { booksStore } = useStore();
@@ -70,7 +69,6 @@ const Form = () => {
             booksStore.fetchBooksByContent(inputValue);
         }
 
-        // Навигация после поиска
         navigate("/smart_search/books");
     };
 

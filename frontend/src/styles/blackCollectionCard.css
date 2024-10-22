@@ -1,0 +1,68 @@
+.black-card {
+    width: 400px;
+    height: 220px;
+    background-color: #232323;
+    transition: all 0.2s;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.black-card__title {
+    font-family: Newake;
+    color: #ededed;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px; /* Добавляем отступ между заголовком и описанием */
+}
+
+.black-card__description {
+    color: #dad9d9;
+    font-weight: lighter;
+    text-align: center;
+    font-family: Broadleaf;
+    font-size: 15px;
+}
+
+.black-card:hover {
+    transform: scale(0.98);
+    border-radius: 20px;
+}
+
+@media (max-width: 760px) {
+    .black-card {
+        width: 300px;
+        height: 200px;
+        background-color: #232323FF;
+        transition: all 0.2s;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column; /* Изменяем направление на колонку (вертикально) */
+        justify-content: center; /* Центрируем по вертикали */
+        align-items: center; /* Центрируем по горизонтали */
+        padding: 20px;
+    }
+
+    .black-card__title {
+        font-family: Newake;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px; /* Добавляем отступ между заголовком и описанием */
+    }
+
+    .black-card__description {
+        color: white;
+        font-weight: lighter;
+        text-align: center;
+    }
+
+    .black-card :hover {
+        transform: scale(0.98);
+        border-radius: 20px;
+    }
+}

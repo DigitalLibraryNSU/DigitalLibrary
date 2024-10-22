@@ -6,24 +6,9 @@
 }
 
 @font-face {
-    font-family: "Activistka";
-    src: local("Activistka"),
-    url("./assets/activistka_regular.ttf") format("truetype");
-    font-weight: normal;
-}
-
-@font-face {
     font-family: "Newake";
     src: local("Newake"),
     url("./assets/Newake-Font-Demo.otf") format("truetype");
-    font-weight: normal;
-}
-
-
-@font-face {
-    font-family: "Gothica";
-    src: local("Gothica"),
-    url("./assets/Gothic60-Regular.otf") format("truetype");
     font-weight: normal;
 }
 

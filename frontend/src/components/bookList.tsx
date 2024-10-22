@@ -2,15 +2,17 @@ import {Col, Row} from "antd";
 import BookCard from "./BookCard.tsx";
 
 interface Book {
-    id: number;
-    name: string;
-    author: string;
-    description: string;
+    id: string;
     documentId: string;
+    name: string;
+    description: string;
+    author: string;
     image: string;
+    documentName: string;
+    documentMime: string;
+    documentUrl: string;
 }
 
-// Определяем интерфейс пропсов компонента, который принимает массив книг
 interface BookListProps {
     books: Book[];
 }

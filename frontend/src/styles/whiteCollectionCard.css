@@ -1,0 +1,72 @@
+.white-card {
+    width: 400px;
+    height: 220px;
+    background-color: white;
+    border: black solid 1px;
+    transition: all 0.2s;
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.white-card__title {
+    font-family: Newake;
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px; /* Добавляем отступ между заголовком и описанием */
+}
+
+.white-card__description {
+    color: #1a1a1a;
+    font-weight: lighter;
+    text-align: center;
+    font-family: Broadleaf;
+    font-size: 15px;
+}
+
+.white-card:hover {
+    transform: scale(0.98);
+    border-radius: 20px;
+}
+
+@media (max-width: 760px) {
+
+    .white-card  {
+        width: 300px;
+        height: 200px;
+        background-color: white;
+        border: black solid 1px;
+        transition: all 0.2s;
+        display: flex;
+        border-radius: 10px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .white-card__title {
+        font-family: Newake;
+        font-size: 30px;
+        color: black;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .white-card__description {
+        color: black;
+        font-weight: lighter;
+        text-align: center;
+    }
+
+    .white-card:hover {
+        transform: scale(0.98);
+        border-radius: 20px;
+    }
+}

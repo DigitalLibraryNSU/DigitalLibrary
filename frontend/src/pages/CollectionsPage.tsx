@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { Col, Layout, Row } from "antd";
 import { Header } from "../components/header.tsx";
-import WhiteCard from "../components/whiteCard.tsx";
-import BlackCard from "../components/blackCollectionCard.tsx";
+import WhiteCollectionCard from "../components/whiteCollectionCard.tsx";
+import BlackCollectionCard from "../components/blackCollectionCard.tsx";
 import { useStore } from "../Store/StoreContext.tsx";
 import { useEffect } from "react";
 
@@ -33,14 +33,17 @@ const CollectionsPage: React.FC = observer(() => {
                     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                         {collectionsStore.collections.map((collection: Collection) => (
                             <Col
-                                span={8}
+                                xs={24}
+                                sm={24}
+                                md={12}
+                                lg={8}
                                 key={collection.id}
                                 style={{ marginTop: "20px", marginBottom: "10px" }}
                             >
                                 {(collection.id / 2) % 2 === 0 ? (
-                                    <BlackCard title={collection.name} description={collection.description} collectionId={collection.documentId} />
+                                    <BlackCollectionCard title={collection.name} description={collection.description} collectionId={collection.documentId} />
                                 ) : (
-                                    <WhiteCard title={collection.name} description={collection.description} collectionId={collection.documentId} />
+                                    <WhiteCollectionCard title={collection.name} description={collection.description} collectionId={collection.documentId} />
                                 )}
                             </Col>
                         ))}

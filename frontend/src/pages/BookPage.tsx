@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useCallback, useEffect} from "react";
 import styled from "styled-components";
 import { Header } from "../components/header";
 import { useParams } from "react-router-dom";
@@ -15,6 +15,28 @@ const BookPage: React.FC = observer(() => {
         }
     }, [bookId, bookStore]);
 
+    // Используем useCallback вне любых условий
+    const downloadFile = useCallback(async () => {
+        if (!bookStore.book?.documentUrl) {
+            alert("ou, we have problems");
+            return;
+        }
+        try {
+            const response = await fetch(bookStore.book.documentUrl);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const fileData = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(fileData);
+            link.download = bookStore.book.name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Failed to download file.');
+        }
+    }, [bookStore.book?.documentUrl, bookStore.book?.name]);  // Следим за изменениями URL и имени документа
+
     if (bookStore.isLoading) {
         return <div>Loading...</div>;
     }
@@ -26,24 +48,6 @@ const BookPage: React.FC = observer(() => {
     if (!bookStore.book) {
         return <div>No book found</div>;
     }
-
-    const downloadFile = async () => {
-        try {
-            const response = await fetch(bookStore.book.documentUrl);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const fileData = await response.blob();
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(fileData);
-            link.download = bookStore.book.name;
-            console.log(bookStore.book.documentName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (error) {
-            console.error('Download error:', error);
-            alert('Failed to download file.');
-        }
-    };
 
     return (
         <StyledBookPage>

@@ -11,6 +11,7 @@ type CardProps = {
 const WhiteCollectionCard: FC<CardProps> = ({ title, description, collectionId }) => {
     const navigate = useNavigate();
     return (
+        // так делать плохо выноси в useCallback обработчик
         <div className="white-card" onClick={() => navigate(`/collections/${collectionId}`)}>
             <span className="white-card__title">{title.toUpperCase()}</span>
             <span className="white-card__description">{description}</span>

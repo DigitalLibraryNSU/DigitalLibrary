@@ -9,13 +9,8 @@ const BookPage: React.FC = observer(() => {
     const { bookId } = useParams<{ bookId: string }>();
     const { bookStore } = useStore();
 
-    useEffect(() => {
-        if (bookId) {
-            bookStore.fetchBook(bookId);  // Загружаем книгу по id
-        }
-    }, [bookId, bookStore]);
+    useEffect(() => {if (bookId) {bookStore.fetchBook(bookId);}}, [bookId, bookStore]);
 
-    // Используем useCallback вне любых условий
     const downloadFile = useCallback(async () => {
         if (!bookStore.book?.documentUrl) {
             alert("ou, we have problems");

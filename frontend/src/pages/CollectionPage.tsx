@@ -14,7 +14,7 @@ const CollectionPage: React.FC = observer(() => {
 
     useEffect(() => {
         booksStore.fetchBooksByCollection(collectionId);
-        console.log("Collections after fetch:", booksStore.books);  // Лог для проверки данных после вызова
+        console.log("Collections after fetch:", booksStore.books);
     }, [booksStore]);
 
     return (

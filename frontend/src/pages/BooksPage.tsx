@@ -10,17 +10,11 @@ const { Content} = Layout;
 const BooksPage: React.FC = observer(() => {
     const { booksStore } = useStore();
 
-    if (booksStore.isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (booksStore.isLoading) return <div>Loading...</div>;
 
-    if (booksStore.error) {
-        return <div>Error: {booksStore.error}</div>;
-    }
+    if (booksStore.error) return <div>Error: {booksStore.error}</div>;
 
-    if (!booksStore.books) {
-        return <div>No book found</div>;
-    }
+    if (!booksStore.books) return <div>No book found</div>;
 
     return (
         <Layout style={{minHeight: "100vh"}}>

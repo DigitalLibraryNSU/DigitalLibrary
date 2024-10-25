@@ -10,7 +10,7 @@ const Form = () => {
     const { booksStore } = useStore();
 
     // Обработчик нажатия на кнопку
-    const handleButtonClick = useCallback((field: string) => {
+    const handleButtonClick = useCallback((field: string) => () => {
         setActiveField(field);
         setInputValue('');
     }, []);
@@ -32,7 +32,7 @@ const Form = () => {
             booksStore.fetchBooksByContent(inputValue);
         }
         navigate("/smart_search/books");
-    }, []);
+    }, [inputValue]);
 
     return (
         <div className="find-card">
@@ -40,17 +40,13 @@ const Form = () => {
                 <h3 className="find-card__header">Find by:</h3>
                 <div className="find-card__buttons">
                     <button className="find-card__button"
-                        // так делать плохо выноси в useCallback обработчик
-                            onClick={() => handleButtonClick('Author')}>Author</button>
+                            onClick={handleButtonClick('Author')}>Author</button>
                     <button className="find-card__button"
-                        // так делать плохо выноси в useCallback обработчик
-                            onClick={() => handleButtonClick('Title')}>Title</button>
+                            onClick={handleButtonClick('Title')}>Title</button>
                     <button className="find-card__button"
-                        // так делать плохо выноси в useCallback обработчик
-                            onClick={() => handleButtonClick('Topic')}>Topic</button>
+                            onClick={handleButtonClick('Topic')}>Topic</button>
                     <button className="find-card__button"
-                        // так делать плохо выноси в useCallback обработчик
-                            onClick={() => handleButtonClick('Content')}>Content</button>
+                            onClick={handleButtonClick('Content')}>Content</button>
                 </div>
                 {activeField && (
                     <div className="find-card__open">

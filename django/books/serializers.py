@@ -12,6 +12,13 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True)
+    class Meta:
+        model = Collection
+        # fields = ('id', 'title', 'description', 'books')
+        fields = '__all__'
+
+class CollectionSerializerWithIds(serializers.ModelSerializer):
     class Meta:
         model = Collection
         # fields = ('id', 'title', 'description', 'books')

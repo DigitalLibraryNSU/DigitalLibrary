@@ -1,3 +1,7 @@
 .DS_Store
-.venv/
+django/venv/
 django/.idea/
+django/media/
+django/books/migrations/__pycache__/
+django/books/__pycache__/
+django/digitalLibraryBackend/__pycache__/

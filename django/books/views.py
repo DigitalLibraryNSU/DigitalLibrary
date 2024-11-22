@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from elasticsearch_dsl.query import MultiMatch
 
 # Create your views here.
 from .models import Book, Collection
@@ -8,10 +9,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from .documents import BookDocument
+
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    #
+    # def perform_create(self, serializer):
+    #     serializer.save(data=self.request.data)
 
 
 class BookDetailView(APIView):
@@ -27,7 +33,17 @@ class BookDetailView(APIView):
 class BookAuthorSearch(APIView):
     def get(self, request, book_author):
         try:
-            books = Book.objects.filter(author=book_author)
+            results = BookDocument.search().query(
+                MultiMatch(
+                query=book_author,
+                fields=['author'],
+                type="best_fields",
+                fuzziness="AUTO"
+            )
+            )[:10].execute()
+            book_ids = [hit.meta.id for hit in results]
+            books = Book.objects.filter(id__in=book_ids)
+
             serializer = BookSerializer(books, many=True)
             return Response(serializer.data)
         except Book.DoesNotExist:
@@ -36,11 +52,45 @@ class BookAuthorSearch(APIView):
 class BookTitleSearch(APIView):
     def get(self, request, book_title):
         try:
-            books = Book.objects.filter(title=book_title)
+            results = BookDocument.search().query(
+                MultiMatch(
+                    query=book_title,
+                    fields=['title'],
+                    type="best_fields",
+                    fuzziness="AUTO"
+                )
+            )[:10].execute()
+
+            book_ids = [hit.meta.id for hit in results]
+            books = Book.objects.filter(id__in=book_ids)
             serializer = BookSerializer(books, many=True)
             return Response(serializer.data)
         except Book.DoesNotExist:
             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class BookExcerptSearch(APIView):
+    def get(self, request, excerpt):
+        try:
+            print(excerpt)
+
+            # results = BookDocument.search().query("match_phrase", excerpt=excerpt)[:10].execute()
+
+            results = BookDocument.search().query(
+                MultiMatch(
+                    query=excerpt,
+                    fields=['excerpt'],
+                    type="best_fields",
+                    # fuzziness="AUTO"
+                )
+            )[:10].execute()
+            book_ids = [hit.meta.id for hit in results]
+            books = Book.objects.filter(id__in=book_ids)
+            serializer = BookSerializer(books, many=True)
+            return Response(serializer.data)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class CollectionListCreate(generics.ListCreateAPIView):
     queryset = Collection.objects.all()

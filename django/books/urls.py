@@ -8,4 +8,5 @@ urlpatterns = [
     path('collections/<int:collection_id>/', views.CollectionDetailView.as_view(), name='get_collection_by_id'),
     path('bookByAuthor/<str:book_author>/', views.BookAuthorSearch.as_view(), name='book_by_author'),
     path('bookByTitle/<str:book_title>/', views.BookTitleSearch.as_view(), name='book_by_title'),
+    path('bookByExcerpt/<str:excerpt>/', views.BookExcerptSearch.as_view(), name='book_by_excerpt'),
 ]

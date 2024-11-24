@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .documents import BookDocument
-
+from .book_search import generate_embedding
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -74,16 +74,8 @@ class BookExcerptSearch(APIView):
         try:
             print(excerpt)
 
-            # results = BookDocument.search().query("match_phrase", excerpt=excerpt)[:10].execute()
+            results = BookDocument.search().query("match_phrase", excerpts=excerpt)[:10].execute()
 
-            results = BookDocument.search().query(
-                MultiMatch(
-                    query=excerpt,
-                    fields=['excerpt'],
-                    type="best_fields",
-                    # fuzziness="AUTO"
-                )
-            )[:10].execute()
             book_ids = [hit.meta.id for hit in results]
             books = Book.objects.filter(id__in=book_ids)
             serializer = BookSerializer(books, many=True)
@@ -91,6 +83,23 @@ class BookExcerptSearch(APIView):
         except Book.DoesNotExist:
             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+# class BookThemeSearch(APIView):
+#     def get(self, request, theme):
+#         try:
+#             print(theme)
+#
+#             theme_embedding = generate_embedding(theme)
+#
+#             # results = BookDocument.search().query("match_phrase", excerpts=excerpt)[:10].execute()
+#             # results = BookDocument.search().query().
+#
+#             book_ids = [hit.meta.id for hit in results]
+#             books = Book.objects.filter(id__in=book_ids)
+#             serializer = BookSerializer(books, many=True)
+#             return Response(serializer.data)
+#         except Book.DoesNotExist:
+#             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class CollectionListCreate(generics.ListCreateAPIView):
     queryset = Collection.objects.all()

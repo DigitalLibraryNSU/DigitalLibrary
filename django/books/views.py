@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from elasticsearch_dsl.query import MultiMatch
 
 # Create your views here.
@@ -84,22 +83,50 @@ class BookExcerptSearch(APIView):
             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
-# class BookThemeSearch(APIView):
-#     def get(self, request, theme):
-#         try:
-#             print(theme)
-#
-#             theme_embedding = generate_embedding(theme)
-#
-#             # results = BookDocument.search().query("match_phrase", excerpts=excerpt)[:10].execute()
-#             # results = BookDocument.search().query().
-#
-#             book_ids = [hit.meta.id for hit in results]
-#             books = Book.objects.filter(id__in=book_ids)
-#             serializer = BookSerializer(books, many=True)
-#             return Response(serializer.data)
-#         except Book.DoesNotExist:
-#             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+class BookThemeSearch(APIView):
+    def get(self, request, theme):
+        try:
+            print(theme)
+
+            theme_embedding = generate_embedding(theme)
+            body = {"query": {
+                            "script_score": {
+                                "query": {
+                                    "match_all": {}
+                                },
+                                "script": {
+                                    "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
+                                    "params": {
+                                        "query_vector": theme_embedding
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+            result = BookDocument.search().from_dict(body).execute()
+            # result = BookDocument.search().query({
+            #     "script_score": {
+            #         "query": {"match_all": {}},
+            #         "script": {
+            #             "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
+            #             "params": {"query_vector": theme_embedding}
+            #         }
+            #     }
+            # }).script_fields().execute()
+
+
+
+            if result['hits']['total']['value'] == 0:
+                raise Book.DoesNotExist
+
+            book_ids = [hit.meta.id for hit in result]
+            books = Book.objects.filter(id__in=book_ids)
+
+            serializer = BookSerializer(books, many=True)
+            return Response(serializer.data)
+        except Book.DoesNotExist:
+            return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class CollectionListCreate(generics.ListCreateAPIView):
     queryset = Collection.objects.all()

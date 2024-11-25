@@ -95,19 +95,19 @@ def get_embedding(book_path):
 #     query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
 #
 #     # Поиск по индексу в Elasticsearch
-#     resp = client.search(index="books-index", query={
-#         "script_score": {
-#             "query": {
-#                 "match_all": {}
-#             },
-#             "script": {
-#                 "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-#                 "params": {
-#                     "query_vector": query_embedding
-#                 }
-#             }
-#         }
-#     })
+    resp = client.search(index="books-index", query={
+        "script_score": {
+            "query": {
+                "match_all": {}
+            },
+            "script": {
+                "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
+                "params": {
+                    "query_vector": query_embedding
+                }
+            }
+        }
+    })
 #
 #     # Проверка на наличие совпадений
 #     if resp['hits']['total']['value'] > 0:

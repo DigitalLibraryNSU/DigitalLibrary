@@ -17,12 +17,12 @@ class CollectionsStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get("http://localhost:1337/api/collections");
+            const response = await axios.get("http://127.0.0.1:8000/collections/?format=json");
             console.log("API response:", response);
-            this.collections = response.data.data.map((category: any) => ({
+            this.collections = response.data.map((category: any) => ({
                 id: category.id,
-                documentId: category.documentId,
-                name: category.name,
+                documentId: category.id,
+                name: category.title,
                 description: category.description || '',
 
             }));

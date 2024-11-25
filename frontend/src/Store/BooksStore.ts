@@ -30,16 +30,16 @@ class BooksStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/collections/${collectionId}?populate=books.image`);
-            console.log(`http://localhost:1337/api/collections/${collectionId}?populate=*`);
+            const response = await axios.get(`http://127.0.0.1:8000/collections/${collectionId}/?format=json`);
+            // console.log(`http://localhost:1337/api/collections/${collectionId}?populate=*`);
             console.log("API response:", response);
-            this.books = response.data.data.books.map((book: any) => ({
+            this.books = response.data.books.map((book: any) => ({
                 id: book.id,
-                documentId: book.documentId,
-                name: book.name,
+                documentId: book.id,
+                name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -56,17 +56,17 @@ class BooksStore {
         this.error = null;
 
         try {
-            console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books?filters[author][$eq]=${author}&populate=*`);
-            console.log("API get:", `http://localhost:1337/api/books?filters[author][$eq]=${author}`);
+            // console.log("Fetching collections...");  // Лог для проверки начала запроса
+            const response = await axios.get(`http://127.0.0.1:8000/bookByAuthor/${author}/`);
+            // console.log("API get:", `http://localhost:1337/api/books?filters[author][$eq]=${author}`);
             console.log("API response:", response);
-            this.books = response.data.data.map((book: any) => ({
-                id: book.id,//number
-                documentId: book.documentId,//string
-                name: book.name,//string
-                description: book.description.slice(0, 200)+"..." || '',//string
-                author: book.author || '',//string
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
+            this.books = response.data.map((book: any) => ({
+                id: book.id,
+                documentId: book.id,
+                name: book.title,
+                description: book.description.slice(0, 200)+"..." || '',
+                author: book.author || '',
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -83,16 +83,16 @@ class BooksStore {
         this.error = null;
 
         try {
-            console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books?filters[name][$eq]=${title}&populate=*`);
+            // console.log("Fetching collections...");  // Лог для проверки начала запроса
+            const response = await axios.get(`http://127.0.0.1:8000/bookByTitle/${title}/?format=json`);
             console.log("API response:", response);
-            this.books = response.data.data.map((book: any) => ({
+            this.books = response.data.map((book: any) => ({
                 id: book.id,
-                documentId: book.documentId,
-                name: book.name,
+                documentId: book.id,
+                name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -102,22 +102,22 @@ class BooksStore {
             this.isLoading = false;
         }
     }
-
+    
     async fetchBooksByContent(content: string ) {
         this.isLoading = true;
         this.error = null;
 
         try {
-            console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books?populate=*`);
+            // console.log("Fetching collections...");  // Лог для проверки начала запроса
+            const response = await axios.get(`http://127.0.0.1:8000/bookByExcerpt/${content}/?format=json`);
             console.log("API response:", response);
-            this.books = response.data.data.map((book: any) => ({
+            this.books = response.data.map((book: any) => ({
                 id: book.id,
-                documentId: book.documentId,
-                name: book.name,
+                documentId: book.id,
+                name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -134,16 +134,15 @@ class BooksStore {
         this.error = null;
 
         try {
-            console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books?populate=*`);
+            const response = await axios.get(`http://127.0.0.1:8000/bookByTheme/${topic}/?format=json`);
             console.log("API response:", response);
-            this.books = response.data.data.map((book: any) => ({
+            this.books = response.data.map((book: any) => ({
                 id: book.id,
-                documentId: book.documentId,
-                name: book.name,
+                documentId: book.id,
+                name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -157,3 +156,6 @@ class BooksStore {
 
 const booksStore = new BooksStore();
 export default booksStore;
+
+
+

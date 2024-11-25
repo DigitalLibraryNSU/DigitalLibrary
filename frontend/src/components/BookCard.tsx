@@ -12,7 +12,7 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ name, description, author, bookId, img }) => {
     const navigate = useNavigate();
-    const handleClick = useCallback(() => {navigate(`/book/${bookId}`)}, []);
+    const handleClick = useCallback(() => {navigate(`/books/${bookId}`)}, []);
 
     return (
             <button className="book-card" onClick={handleClick}>

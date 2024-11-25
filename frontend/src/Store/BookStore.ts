@@ -28,22 +28,22 @@ class BookStore {
         this.error = null;
 
         try {
-            console.log(`http://localhost:1337/api/books/${bookId}?populate=*`);  // Лог для проверки начала запроса
-            const response = await axios.get(`http://localhost:1337/api/books/${bookId}?populate=*`);
+            // console.log(`http://localhost:1337/api/books/${bookId}?populate=*`);  // Лог для проверки начала запроса
+            const response = await axios.get(`http://127.0.0.1:8000/books/${bookId}/`);
             console.log("API response:", response);
 
-            const book = response.data.data;
+            const book = response.data;
 
             this.book = {
                 id: book.id,
                 documentId: book.documentId,
-                name: book.name,
+                name: book.title,
                 description: book.description || '',
                 author: book.author || '',
-                image: book.image?.[0]?.url ? `http://localhost:1337${book.image[0].url}` : '',
-                documentName: book.book?.name ? `http://localhost:1337${book.book.name}` : '',
-                documentMime: book.book?.mime ? `http://localhost:1337${book.book.mime}` : '',
-                documentUrl: book.book?.url ? `http://localhost:1337${book.book.url}` : ''
+                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
+                documentName: book.title ? `http://127.0.0.1:8000/${book.title}` : '',
+                documentMime: book.book?.mime ? `http://127.0.0.1:8000/${book.book.mime}` : '',
+                documentUrl: book.bookFile ? `http://127.0.0.1:8000/${book.bookFile}` : ''
             };
 
             console.log(`http://localhost:1337/api/books/${bookId}`)

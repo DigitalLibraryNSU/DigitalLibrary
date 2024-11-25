@@ -17,6 +17,7 @@ const BookPage: React.FC = observer(() => {
             return;
         }
         try {
+            console.log(bookStore.book.documentUrl);
             const response = await fetch(bookStore.book.documentUrl);
             if (!response.ok) throw new Error('Network response was not ok');
             const fileData = await response.blob();

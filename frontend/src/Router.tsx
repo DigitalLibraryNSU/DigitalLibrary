@@ -14,7 +14,7 @@ function Router() {
                 <Route path="/collections" element={<CollectionsPage/>} />
                 <Route path="/smart_search" element={<SearchPage/>} />
                 <Route path="/smart_search/books" element={<BooksPage/>} />
-                <Route path="/book/:bookId" element={<BookPage/>} />
+                <Route path="/books/:bookId" element={<BookPage/>} />
                 <Route path="/collections/:collectionId" element={<CollectionPage/>} />
             </Routes>
         </BrowserRouter>

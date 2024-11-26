@@ -4,3 +4,4 @@ from .models import Book, Collection
 
 admin.site.register(Book)
 admin.site.register(Collection)
+

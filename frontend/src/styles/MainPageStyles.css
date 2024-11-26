@@ -1,0 +1,85 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 100px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.texts {
+    max-width: 500px;
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.title {
+    color: #000000;
+    font-size: 65px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+    font-family: Newake;
+}
+
+.arrow-right {
+    font-size: 34px;
+    margin-top: 16px;
+    color: #020101;
+}
+
+.arrow-right:hover {
+    color: #cf0000;
+}
+
+.bottom {
+    margin-top: 20vh;
+}
+
+.text {
+    margin-top: 40px;
+    color: #000000;
+    font-size: 30px; /* Размер шрифта для текста */
+    line-height: 1.6; /* Интерлиньяж для лучшей читаемости */
+    margin-bottom: 10px; /* Отступы между абзацами */
+    text-align: left; /* Выравнивание текста */
+    font-family: Broadleaf;
+}
+
+/* Стили для карточек */
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Отступ между карточками */
+}
+
+/* Медиазапрос для мобильных устройств */
+@media (max-width: 1200px) {
+    .arrow-right {
+        font-size: 0;
+    }
+    .container {
+        flex-direction: column; /* Вертикальное расположение на мобильных */
+        align-items: center;
+        margin: 10px; /* Уменьшенные отступы на мобильных */
+        margin-top: 80px;
+    }
+
+    .bottom {
+        margin-top: 0;
+    }
+
+    .texts, .cards {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center; /* Центрируем текст на мобильных устройствах */
+    }
+
+    .title {
+        font-size: 40px; /* Меньший размер заголовка на мобильных */
+    }
+
+    .text {
+        font-size: 25px; /* Меньший размер текста на мобильных */
+    }
+}

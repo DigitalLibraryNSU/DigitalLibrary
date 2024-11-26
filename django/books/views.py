@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .documents import BookDocument
-from .book_search import generate_embedding
+from .book_search import search_best_matching_book
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -88,34 +88,7 @@ class BookThemeSearch(APIView):
         try:
             print(theme)
 
-            theme_embedding = generate_embedding(theme)
-            body = {"query": {
-                            "script_score": {
-                                "query": {
-                                    "match_all": {}
-                                },
-                                "script": {
-                                    "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-                                    "params": {
-                                        "query_vector": theme_embedding
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-            result = BookDocument.search().from_dict(body).execute()
-            # result = BookDocument.search().query({
-            #     "script_score": {
-            #         "query": {"match_all": {}},
-            #         "script": {
-            #             "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-            #             "params": {"query_vector": theme_embedding}
-            #         }
-            #     }
-            # }).script_fields().execute()
-
-
+            result = search_best_matching_book(theme)
 
             if result['hits']['total']['value'] == 0:
                 raise Book.DoesNotExist

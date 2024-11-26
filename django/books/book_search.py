@@ -6,11 +6,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from elasticsearch import Elasticsearch
 
-# Создаем клиента Elasticsearch
-# client = Elasticsearch(
-#     "http://localhost:9200/",
-#     basic_auth=("elastic", "tBbX2Zun")
-# )
+
 
 # Загрузка модели для создания эмбеддингов
 embedding_model = pipeline('feature-extraction', model='sentence-transformers/all-MiniLM-L6-v2')
@@ -91,11 +87,14 @@ def get_embedding(book_path):
     return avg_embedding
 
 # Выполнение семантического поиска по запросу
-# def search_best_matching_book(query_text):
-#     query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
-#
-#     # Поиск по индексу в Elasticsearch
-    resp = client.search(index="books-index", query={
+def search_best_matching_book(query_text):
+    client = Elasticsearch(
+        "http://localhost:9200/"
+    )
+    query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
+
+    # Поиск по индексу в Elasticsearch
+    resp = client.search(index="books", query={
         "script_score": {
             "query": {
                 "match_all": {}
@@ -108,16 +107,17 @@ def get_embedding(book_path):
             }
         }
     })
-#
-#     # Проверка на наличие совпадений
-#     if resp['hits']['total']['value'] > 0:
-#         best_match = resp['hits']['hits'][0]
-#         print("Best matching book found:")
-#         print(f"Title: {best_match['_source']['title']}")
-#         print(f"Author: {best_match['_source']['author']}")
-#         print(f"Score: {best_match['_score']}")
-#     else:
-#         print("No suitable matches found.")
+
+    return resp
+    # Проверка на наличие совпадений
+    # if resp['hits']['total']['value'] > 0:
+    #     best_match = resp['hits']['hits'][0]
+    #     print("Best matching book found:")
+    #     print(f"Title: {best_match['_source']['title']}")
+    #     print(f"Author: {best_match['_source']['author']}")
+    #     print(f"Score: {best_match['_score']}")
+    # else:
+    #     print("No suitable matches found.")
 
 
 # Индексация двух книг

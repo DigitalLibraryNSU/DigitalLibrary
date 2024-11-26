@@ -1,0 +1,6 @@
+CREATE USER librarian WITH PASSWORD 'password';
+
+
+CREATE DATABASE digital_library OWNER librarian;
+или
+ALTER DATABASE digital_library OWNER TO librarian;

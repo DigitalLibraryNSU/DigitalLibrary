@@ -19,7 +19,7 @@
     font-weight: bold;
     margin-bottom: 20px;
     text-align: left;
-    font-family: Newake;
+    font-family: Rubik;
 }
 
 .arrow-right {
@@ -81,5 +81,8 @@
 
     .text {
         font-size: 25px; /* Меньший размер текста на мобильных */
+    }
+    .arrow-right {
+        display: none;
     }
 }

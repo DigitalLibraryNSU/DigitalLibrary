@@ -13,6 +13,43 @@
 }
 
 
+/* Подключение обычного начертания */
+@font-face {
+    font-family: "Rubik";
+    src: local("Rubik Regular"),
+    url("./assets/Rubik-Regular.ttf") format("truetype");
+    font-weight: 400; /* нормальное начертание */
+    font-style: normal;
+}
+
+/* Подключение жирного начертания */
+@font-face {
+    font-family: "Rubik";
+    src: local("Rubik Bold"),
+    url("./assets/Rubik-Bold.ttf") format("truetype");
+    font-weight: 700; /* жирное начертание */
+    font-style: normal;
+}
+
+/* Подключение курсивного начертания */
+@font-face {
+    font-family: "Rubik";
+    src: local("Rubik Italic"),
+    url("./assets/Rubik-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Подключение жирного курсивного начертания */
+@font-face {
+    font-family: "Rubik";
+    src: local("Rubik Bold Italic"),
+    url("./assets/Rubik-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
 /*  line-height: 1.5;*/

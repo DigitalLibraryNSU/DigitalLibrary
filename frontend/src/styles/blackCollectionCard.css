@@ -1,6 +1,8 @@
 .black-card {
-    width: 400px;
-    height: 220px;
+    width: 100%; /* Автоматическая ширина */
+    max-width: 400px; /* Ограничение максимальной ширины */
+    height: auto; /* Высота будет зависеть от контента */
+    margin: 10px;
     background-color: #232323;
     transition: all 0.2s;
     border-radius: 10px;
@@ -9,15 +11,16 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    box-sizing: border-box; /* Учитываем отступы в размерах */
 }
 
 .black-card__title {
-    font-family: Newake;
+    font-family: Rubik;
     color: #ededed;
-    font-size: 20px;
+    font-size: 27px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 10px; /* Добавляем отступ между заголовком и описанием */
+    margin-bottom: 10px; /* Отступ между заголовком и описанием */
 }
 
 .black-card__description {
@@ -33,36 +36,49 @@
     border-radius: 20px;
 }
 
-@media (max-width: 760px) {
+/* Адаптивность для планшетов и телефонов */
+@media (max-width: 1024px) { /* Для планшетов */
     .black-card {
-        width: 300px;
-        height: 200px;
-        background-color: #232323FF;
-        transition: all 0.2s;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column; /* Изменяем направление на колонку (вертикально) */
-        justify-content: center; /* Центрируем по вертикали */
-        align-items: center; /* Центрируем по горизонтали */
-        padding: 20px;
+        max-width: 350px;
+        margin: 10px auto; /* Центрирование карточек */
     }
 
     .black-card__title {
-        font-family: Newake;
-        color: white;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 10px; /* Добавляем отступ между заголовком и описанием */
+        font-size: 22px;
     }
 
     .black-card__description {
-        color: white;
-        font-weight: lighter;
-        text-align: center;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 760px) { /* Для телефонов */
+    .black-card {
+        max-width: 280px;
+        padding: 15px;
+        margin: 10px auto;
     }
 
-    .black-card :hover {
-        transform: scale(0.98);
-        border-radius: 20px;
+    .black-card__title {
+        font-size: 18px;
+    }
+
+    .black-card__description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) { /* Для небольших телефонов */
+    .black-card {
+        max-width: 100%; /* Заполняет ширину экрана */
+        margin: 5px auto;
+    }
+
+    .black-card__title {
+        font-size: 16px;
+    }
+
+    .black-card__description {
+        font-size: 12px;
     }
 }

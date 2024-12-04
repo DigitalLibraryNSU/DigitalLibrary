@@ -19,19 +19,15 @@ interface BookListProps {
 
 const BookList: React.FC<BookListProps> = ({books}) => {
     return (
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
             {books.map((book) => (
-                <Col span={8}
-                     key={book.id}
-                     style={{marginTop: "20px", minWidth: "250px"}}>
                     <BookCard name={book.name}
                               description={book.description}
                               author={book.author}
                               bookId={book.documentId}
                               img = {book.image}/>
-                </Col>
             ))}
-        </Row>
+        </div>
     )
 }
 

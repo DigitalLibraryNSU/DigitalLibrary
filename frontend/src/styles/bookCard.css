@@ -4,14 +4,15 @@
     justify-content: center;
     align-items: center;
     border: black solid 1px;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 250px;
-    height: 350px;
+    margin: 10px; /* Унифицированные отступы */
+    width: 100%; /* Автоматическая ширина */
+    max-width: 250px; /* Ограничение максимальной ширины */
+    height: auto; /* Высота адаптируется к контенту */
     background: white;
-    padding: .7em;
+    padding: 0.7em;
     border-radius: 6px;
     text-align: center;
+    box-sizing: border-box; /* Учитываем padding в ширине */
 }
 
 .book-card__image {
@@ -20,6 +21,7 @@
     border-radius: 6px;
     margin-bottom: 10px;
     object-fit: cover;
+    width: 100%; /* Заполняет ширину карточки */
 }
 
 .book-card__author {
@@ -44,3 +46,75 @@
     padding-top: 20px;
 }
 
+/* Адаптивность для планшетов и телефонов */
+@media (max-width: 1024px) { /* Для планшетов */
+    .book-card {
+        max-width: 200px; /* Уменьшаем ширину */
+        padding: 0.6em;
+    }
+
+    .book-card__image {
+        height: 150px;
+    }
+
+    .book-card__author {
+        font-size: 0.65em;
+    }
+
+    .book-card__title {
+        font-size: 14px;
+    }
+
+    .book-card__description {
+        font-size: 10px;
+        padding-top: 15px;
+    }
+}
+
+@media (max-width: 760px) { /* Для телефонов */
+    .book-card {
+        max-width: 180px;
+        padding: 0.5em;
+    }
+
+    .book-card__image {
+        height: 130px;
+    }
+
+    .book-card__author {
+        font-size: 0.6em;
+    }
+
+    .book-card__title {
+        font-size: 12px;
+    }
+
+    .book-card__description {
+        font-size: 9px;
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 480px) { /* Для небольших телефонов */
+    .book-card {
+        max-width: 100%; /* Заполняет ширину экрана */
+        padding: 0.5em;
+    }
+
+    .book-card__image {
+        height: 120px;
+    }
+
+    .book-card__author {
+        font-size: 0.55em;
+    }
+
+    .book-card__title {
+        font-size: 11px;
+    }
+
+    .book-card__description {
+        font-size: 8px;
+        padding-top: 8px;
+    }
+}

@@ -7,6 +7,10 @@
     flex-wrap: wrap;
 }
 
+.layout {
+    background-color: none;
+}
+
 .texts {
     max-width: 500px;
     margin-left: 100px;
@@ -61,7 +65,7 @@
 .cards {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Отступ между карточками */
+    gap: 20px; /*Отступ между карточками */
 }
 
 /* Медиазапрос для мобильных устройств */

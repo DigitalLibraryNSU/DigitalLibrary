@@ -1,7 +1,7 @@
 .black-card {
     width: 100%; /* Автоматическая ширина */
     max-width: 400px; /* Ограничение максимальной ширины */
-    height: auto; /* Высота будет зависеть от контента */
+    height: 250px; /* Высота будет зависеть от контента */
     margin: 10px;
     background-color: #232323;
     transition: all 0.2s;

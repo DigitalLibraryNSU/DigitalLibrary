@@ -19,7 +19,7 @@ interface BookListProps {
 
 const BookList: React.FC<BookListProps> = ({books}) => {
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", justifyContent: "space-evenly", flexWrap: "wrap" }}>
             {books.map((book) => (
                     <BookCard name={book.name}
                               description={book.description}

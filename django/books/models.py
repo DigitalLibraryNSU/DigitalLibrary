@@ -7,9 +7,9 @@ fs = FileSystemStorage(location=settings.MEDIA_ROOT)
 
 # Create your models here.
 class Book(models.Model):
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=300, blank=True)
     description = models.TextField(blank=True)
-    author = models.CharField(max_length=300)
+    author = models.CharField(max_length=300, blank=True)
     publisher = models.CharField(max_length=300, null=True, blank=True)
     image = models.ImageField(storage=fs, upload_to='images/', null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -18,7 +18,8 @@ class Book(models.Model):
     bookFile = models.FileField(storage=fs, upload_to='books/', default="books/default.epub")
 
     def __str__(self):
-        return self.title
+        return self.title or "No Title"
+
 
 class Collection(models.Model):
     title = models.CharField(max_length=300)
@@ -29,3 +30,8 @@ class Collection(models.Model):
         return self.title
 
 
+class BookUpload(models.Model):
+    epub_file = models.FileField(upload_to='uploads/')
+
+    def __str__(self):
+        return self.epub_file.name

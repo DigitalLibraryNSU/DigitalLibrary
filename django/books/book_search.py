@@ -4,6 +4,7 @@ import ebooklib
 from ebooklib import epub
 from bs4 import BeautifulSoup
 from datetime import datetime
+
 from elasticsearch import Elasticsearch
 
 
@@ -52,6 +53,33 @@ def get_chapters(book_path):
     return chapters
 
 
+def get_epub_metadata(file_path):
+    """
+    Извлекает метаданные из файла EPUB.
+
+    :param file_path: Путь до файла EPUB
+    :return: Словарь с метаданными книги
+    """
+    try:
+        book = epub.read_epub(file_path)
+
+        metadata = {}
+        metadata['title'] = book.get_metadata('DC', 'title')[0][0] if book.get_metadata('DC', 'title') else None
+        metadata['author'] = [author[0] for author in book.get_metadata('DC', 'creator')]
+        metadata['language'] = book.get_metadata('DC', 'language')[0][0] if book.get_metadata('DC',
+                                                                                              'language') else None
+        metadata['publisher'] = book.get_metadata('DC', 'publisher')[0][0] if book.get_metadata('DC',
+                                                                                                'publisher') else None
+        metadata['date'] = book.get_metadata('DC', 'date')[0][0] if book.get_metadata('DC', 'date') else None
+        metadata['description'] = book.get_metadata('DC', 'description')[0][0] if book.get_metadata('DC',
+                                                                                                    'description') else None
+
+        return metadata
+    except Exception as e:
+        return {"error": f"Ошибка при обработке файла: {e}"}
+
+
+
 # Вычисление среднего эмбеддинга книги
 def calculate_average_embedding(chapter_embeddings):
     return np.mean(chapter_embeddings, axis=0)
@@ -79,7 +107,6 @@ def calculate_average_embedding(chapter_embeddings):
 #     avg_embedding = calculate_average_embedding(chapter_embeddings)
 #
 #     index_book(book_id, title, author, avg_embedding)
-
 
 def get_embedding(book_path):
     chapter_embeddings = get_chapter_embeddings(book_path)

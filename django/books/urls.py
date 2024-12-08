@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from django.contrib import admin
 
 urlpatterns = [
     path('books/', views.BookListCreate.as_view()),
@@ -11,5 +10,4 @@ urlpatterns = [
     path('bookByTitle/<str:book_title>/', views.BookTitleSearch.as_view(), name='book_by_title'),
     path('bookByExcerpt/<str:excerpt>/', views.BookExcerptSearch.as_view(), name='book_by_excerpt'),
     path('bookByTheme/<str:theme>/', views.BookThemeSearch.as_view(), name='book_by_theme'),
-    path('admin/', admin.site.urls),
 ]

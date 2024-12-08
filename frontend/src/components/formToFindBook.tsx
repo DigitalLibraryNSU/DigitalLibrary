@@ -37,16 +37,16 @@ const Form = () => {
     return (
         <div className="find-card">
             <div className="find-card__start">
-                <h3 className="find-card__header">Find by:</h3>
+                <h3 className="find-card__header">Я знаю у книги:</h3>
                 <div className="find-card__buttons">
                     <button className="find-card__button"
-                            onClick={handleButtonClick('Author')}>Author</button>
+                            onClick={handleButtonClick('Author')}>Автор</button>
                     <button className="find-card__button"
-                            onClick={handleButtonClick('Title')}>Title</button>
+                            onClick={handleButtonClick('Title')}>Название</button>
                     <button className="find-card__button"
-                            onClick={handleButtonClick('Topic')}>Topic</button>
+                            onClick={handleButtonClick('Topic')}>Тема</button>
                     <button className="find-card__button"
-                            onClick={handleButtonClick('Content')}>Content</button>
+                            onClick={handleButtonClick('Content')}>Отрывок текста</button>
                 </div>
                 {activeField && (
                     <div className="find-card__open">

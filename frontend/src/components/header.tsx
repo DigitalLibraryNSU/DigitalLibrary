@@ -9,14 +9,14 @@ export const Header = () => {
     const navigate = useNavigate();
     return (
         <header className="header">
-            <span className="header_logo" onClick={() => navigate("/")}>DIGITAL LIBRARY</span>
+            <span className="header_logo" onClick={() => navigate("/")}>Жили-Были Library</span>
             <nav className={`header_nav ${isOpen ? "active" : ""}`}>
                 <ul className="header_nav-list">
                     <li className="header_nav-item" onClick={() => navigate("/collections")}>
-                        <HeaderButton name="collections"/>
+                        <HeaderButton name="коллекции"/>
                     </li>
                     <li className="header_nav-item" onClick={() => navigate("/smart_search")}>
-                        <HeaderButton name="search"/>
+                        <HeaderButton name="поиск"/>
                     </li>
                 </ul>
             </nav>

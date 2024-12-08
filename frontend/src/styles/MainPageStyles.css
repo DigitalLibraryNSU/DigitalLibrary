@@ -19,7 +19,7 @@
     font-weight: bold;
     margin-bottom: 20px;
     text-align: left;
-    font-family: Rubik;
+    font-family: RuslanDisplay;
 }
 
 .arrow-right {
@@ -33,15 +33,26 @@
 }
 
 .bottom {
-    margin-top: 20vh;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
 }
 
 .text {
-    margin-top: 40px;
+    margin-top: 30px;
     color: #000000;
-    font-size: 30px; /* Размер шрифта для текста */
-    line-height: 1.6; /* Интерлиньяж для лучшей читаемости */
-    margin-bottom: 10px; /* Отступы между абзацами */
+    font-size: 25px; /* Размер шрифта для текста */
+    line-height: 29px;
+    text-align: left; /* Выравнивание текста */
+    font-family: Broadleaf;
+}
+
+.text-bottom {
+    margin-top: 30px;
+    color: #000000;
+    font-size: 25px; /* Размер шрифта для текста */
+    line-height: 29px;
+    font-weight: bold;
     text-align: left; /* Выравнивание текста */
     font-family: Broadleaf;
 }
@@ -80,7 +91,7 @@
     }
 
     .text {
-        font-size: 25px; /* Меньший размер текста на мобильных */
+        font-size: 20px; /* Меньший размер текста на мобильных */
     }
     .arrow-right {
         display: none;

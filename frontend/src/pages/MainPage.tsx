@@ -38,11 +38,13 @@ export const MainPage: React.FC = observer(() => {
             <Header />
             <div className="container">
                 <div className="texts">
-                    <span className="title">DIGITAL LIBRARY</span>
-                    <div className="text">Our library can help you to find the book you need. You can use our search by title, author or theme</div>
+                    <span className="title">Жили-Были Library</span>
+                    <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и открывать новые литературные произведения.
+                        С помощью удобного интерфейса вы можете искать книги по автору, названию, теме или отрывку.
+                        Откройте для себя мир книг с нашей библиотекой!</div>
                     <div className="bottom">
-                        <div className="text">You may like these collections</div>
-                        <ArrowRightOutlined className="arrow-right" />
+                        <div className="text-bottom">Возможно вам понравятся эти коллекции <ArrowRightOutlined className="arrow-right" /></div>
+
                     </div>
                 </div>
                 <div className="cards">

@@ -18,7 +18,7 @@
     font-size: 25px;
     font-weight: bold;
     margin-bottom: 20px;
-    font-family: Rubik;
+    font-family: RuslanDisplay;
 }
 
 .find-card__buttons {
@@ -29,7 +29,7 @@
 }
 
 .find-card__button {
-    font-family: Broadleaf;
+    font-family: RuslanDisplay;
     font-size: 17px;
     border-radius: 10px;
     border: 2px solid #323232;

@@ -15,7 +15,6 @@ interface Collection {
 
 const CollectionsPage: React.FC = observer(() => {
     const { collectionsStore } = useStore();
-
     useEffect(() => {
         collectionsStore.fetchCollections();
     }, [collectionsStore]);
@@ -38,8 +37,9 @@ const CollectionsPage: React.FC = observer(() => {
                         justifyContent: "space-between",
                     }}
                 >
-                    {collectionsStore.collections.map((collection: Collection) =>
-                        (collection.id / 2) % 2 === 0 ? (
+                    {
+                        collectionsStore.collections.map((collection: Collection, index: number) =>
+                        index % 2 === 0 ? (
                             <BlackCollectionCard
                                 key={collection.documentId}
                                 title={collection.name}
@@ -54,7 +54,9 @@ const CollectionsPage: React.FC = observer(() => {
                                 collectionId={collection.documentId}
                             />
                         )
-                    )}
+                    )
+
+                    }
                 </div>
         </Layout>
     );

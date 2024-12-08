@@ -8,6 +8,7 @@ import "./assets/Rubik-BoldItalic.ttf"
 import "./assets/Rubik-Italic.ttf"
 import "./assets/Rubik-Bold.ttf"
 import "./assets/Rubik-Regular.ttf"
+import "./assets/RuslanDisplay-Regular.ttf"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -50,6 +50,15 @@
 }
 
 
+@font-face {
+    font-family: "RuslanDisplay";
+    src: local("RuslanDisplay"),
+    url("./assets/RuslanDisplay-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
 /*  line-height: 1.5;*/

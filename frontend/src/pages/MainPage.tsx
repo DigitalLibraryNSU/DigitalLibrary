@@ -34,7 +34,7 @@ export const MainPage: React.FC = observer(() => {
     if (collectionsStore.error) return <div>Error: {collectionsStore.error}</div>;
 
     return (
-        <Layout>
+        <Layout style={{ minHeight: "100vh" }}>
             <Header />
             <div className="container">
                 <div className="texts">

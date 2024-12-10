@@ -29,8 +29,9 @@ class BookForm(forms.ModelForm):
         self.instance.publisher = self.cleaned_data.get('publisher') or metadata.get('publisher', '')
         published_date_str = metadata.get('date', '')
         year_str = published_date_str[:4]
-        self.instance.publishedAt = self.cleaned_data.get('publishedAt') or (int(year_str) if year_str.isdigit() else None)
 
+        self.instance.publishedAt = self.cleaned_data.get('publishedAt') or (int(year_str) if year_str.isdigit() else None)
+        self.instance.image = self.cleaned_data.get('image')
         os.remove(temp_file.name)
 
         return super().save(commit=commit)

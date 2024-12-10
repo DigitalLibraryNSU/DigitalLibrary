@@ -5,6 +5,7 @@ class CollectionsStore {
     collections = [];
     isLoading = false;
     error = null;
+    apiAddress = "http://127.0.0.1:8000";
 
     constructor() {
         makeAutoObservable(this);
@@ -17,7 +18,7 @@ class CollectionsStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get("http://127.0.0.1:8000/collections/?format=json");
+            const response = await axios.get(this.apiAddress+"/collections/?format=json");
             console.log("API response:", response);
             this.collections = response.data.map((category: any) => ({
                 id: category.id,

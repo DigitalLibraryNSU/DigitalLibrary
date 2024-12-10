@@ -18,6 +18,7 @@ class BookStore {
     book: Book | null = null;
     isLoading = false;
     error = null;
+    apiAddress = "http://127.0.0.1:8000";
 
     constructor() {
         makeAutoObservable(this);
@@ -28,27 +29,19 @@ class BookStore {
         this.error = null;
 
         try {
-            // console.log(`http://localhost:1337/api/books/${bookId}?populate=*`);  // Лог для проверки начала запроса
-            const response = await axios.get(`http://127.0.0.1:8000/books/${bookId}/`);
-            console.log("API response:", response);
-
+            const response = await axios.get(this.apiAddress+`/books/${bookId}/`);
             const book = response.data;
-
             this.book = {
                 id: book.id,
                 documentId: book.documentId,
                 name: book.title,
                 description: book.description || '',
                 author: book.author || '',
-                image: book.image ? `http://127.0.0.1:8000/${book.image}` : '',
-                documentName: book.title ? `http://127.0.0.1:8000/${book.title}` : '',
-                documentMime: book.book?.mime ? `http://127.0.0.1:8000/${book.book.mime}` : '',
-                documentUrl: book.bookFile ? `http://127.0.0.1:8000/${book.bookFile}` : ''
+                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                documentName: book.title ? this.apiAddress+`/${book.title}` : '',
+                documentMime: book.book?.mime ? this.apiAddress+`/${book.book.mime}` : '',
+                documentUrl: book.bookFile ? this.apiAddress+`/${book.bookFile}` : ''
             };
-
-            console.log(`http://localhost:1337/api/books/${bookId}`)
-            console.log(book.image)
-            console.log("Processed book:", this.book);
         } catch (error: any) {
             this.error = error.message;
             console.error("Error fetching book:", error);

@@ -1,4 +1,3 @@
-import {Col, Row} from "antd";
 import BookCard from "./BookCard.tsx";
 
 interface Book {

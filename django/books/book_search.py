@@ -4,7 +4,10 @@ import ebooklib
 from ebooklib import epub
 from bs4 import BeautifulSoup
 from datetime import datetime
-
+from PIL import Image
+from io import BytesIO
+import os
+from django.core.files.base import ContentFile
 from elasticsearch import Elasticsearch
 
 
@@ -77,6 +80,27 @@ def get_epub_metadata(file_path):
         return metadata
     except Exception as e:
         return {"error": f"Ошибка при обработке файла: {e}"}
+
+def get_epub_cover(epub_path):
+    """
+    :return сontentFile or None: The cover image as a Django ContentFile object, or None if no cover image is found.
+    """
+    try:
+        book = epub.read_epub(epub_path)
+
+        for item in book.items:
+            if item.media_type.startswith('image') and 'cover' in item.get_name().lower():
+                image_data = item.get_content()
+
+                file_extension = item.media_type.split('/')[-1]
+
+                file_name = f"cover.{file_extension}"
+                return ContentFile(image_data, name=file_name)
+
+    except Exception as e:
+        print(f"Error extracting cover image: {e}")
+
+    return None
 
 
 

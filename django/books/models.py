@@ -28,10 +28,3 @@ class Collection(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class BookUpload(models.Model):
-    epub_file = models.FileField(upload_to='uploads/')
-
-    def __str__(self):
-        return self.epub_file.name

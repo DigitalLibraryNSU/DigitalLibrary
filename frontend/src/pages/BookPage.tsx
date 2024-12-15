@@ -52,7 +52,7 @@ const BookPage: React.FC = observer(() => {
         <Layout style={{minHeight: "100vh"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
-                <h1>Ой, что-то случилось и мы не нашли книжку, попробуйте ещё раз</h1>
+                <h1>Книжку съела собака, но вы можете попробовать открыть её ещё раз, может поможет</h1>
             </Content>
         </Layout>);
     }

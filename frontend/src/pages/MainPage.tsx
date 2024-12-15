@@ -6,6 +6,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useStore } from "../Store/StoreContext.tsx";
+import Loader from "../components/loader.tsx";
 
 interface Collection {
     name: string;
@@ -30,8 +31,39 @@ export const MainPage: React.FC = observer(() => {
         }
     }, [collectionsStore.isLoading, collectionsStore.collections]);
 
-    if (collectionsStore.isLoading) return <div>Loading...</div>;
-    if (collectionsStore.error) return <div>Error: {collectionsStore.error}</div>;
+    if (collectionsStore.isLoading) return (
+        <Layout style={{ minHeight: "100vh" }}>
+            <Header />
+            <div className="container">
+                <div className="texts" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    <span className="title">Жили-Были Library</span>
+                    <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и открывать новые литературные произведения.
+                        С помощью удобного интерфейса вы можете искать книги по автору, названию, теме или отрывку.
+                        Откройте для себя мир книг с нашей библиотекой!</div>
+                    <div className="bottom">
+                        <div className="text-bottom">Возможно вам понравятся эти коллекции <ArrowRightOutlined className="arrow-right" /></div>
+
+                    </div>
+                </div>
+                <div style={{ display: "flex" , alignItems: "center", justifyContent: "center" }}>
+                    <Loader />
+                </div>
+            </div>
+        </Layout>
+    );
+    if (collectionsStore.error || collectionsStore.collections.length === 0) return (
+        <Layout style={{ minHeight: "100vh" }}>
+            <Header />
+            <div className="container">
+                <div className="texts">
+                    <span className="title">Жили-Были Library</span>
+                    <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и открывать новые литературные произведения.
+                        С помощью удобного интерфейса вы можете искать книги по автору, названию, теме или отрывку.
+                        Откройте для себя мир книг с нашей библиотекой!</div>
+                </div>
+            </div>
+        </Layout>
+    );
 
     return (
         <Layout style={{ minHeight: "100vh" }}>

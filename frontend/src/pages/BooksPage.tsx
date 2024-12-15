@@ -24,7 +24,7 @@ const BooksPage: React.FC = observer(() => {
         <Layout style={{minHeight: "100vh"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
-                <h1>Упс, мы не нашли книжки, попробуйте ещё раз</h1>
+                <p>Упс, мы не нашли книжки, попробуйте ещё раз</p>
             </Content>
         </Layout>
     );

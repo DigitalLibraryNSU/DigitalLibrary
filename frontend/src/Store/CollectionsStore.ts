@@ -5,7 +5,7 @@ class CollectionsStore {
     collections = [];
     isLoading = false;
     error = null;
-    apiAddress = "http://127.0.0.1:8000";
+    apiAddress = "http://84.237.53.139:8000";
 
     constructor() {
         makeAutoObservable(this);

@@ -19,7 +19,9 @@ services:
     container_name: django
     environment:
       - DEBUG=true
-      - DJANGO_SETTINGS_MODULE=myproject.settings
+      - DJANGO_SETTINGS_MODULE=digitalLibraryBackend.settings
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:

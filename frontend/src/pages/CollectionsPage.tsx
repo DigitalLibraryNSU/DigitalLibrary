@@ -4,7 +4,9 @@ import { Header } from "../components/header.tsx";
 import WhiteCollectionCard from "../components/whiteCollectionCard.tsx";
 import BlackCollectionCard from "../components/blackCollectionCard.tsx";
 import { useStore } from "../Store/StoreContext.tsx";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import Loader from "../components/loader.tsx";
+import {Content} from "antd/es/layout/layout";
 
 interface Collection {
     name: string;
@@ -19,8 +21,22 @@ const CollectionsPage: React.FC = observer(() => {
         collectionsStore.fetchCollections();
     }, [collectionsStore]);
 
-    if (collectionsStore.isLoading) return <div>Loading...</div>;
-    if (collectionsStore.error) return <div>Error: {collectionsStore.error}</div>;
+    if (collectionsStore.isLoading) return (
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Loader/>
+            </Content>
+        </Layout>
+    );
+    if (collectionsStore.error || collectionsStore.collections.length == 0) return(
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
+                <h1>Мы не можем найти коллекции, попробуйте ещё раз</h1>
+            </Content>
+        </Layout>
+    );
 
     return (
         <Layout style={{ minHeight: "100vh" }}>

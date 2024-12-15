@@ -4,6 +4,9 @@ import { Header } from "../components/header";
 import { useParams } from "react-router-dom";
 import { useStore } from "../Store/StoreContext";
 import { observer } from "mobx-react-lite";
+import {Layout} from "antd";
+import Loader from "../components/loader.tsx";
+import {Content} from "antd/es/layout/layout";
 
 const BookPage: React.FC = observer(() => {
     const { bookId } = useParams<{ bookId: string }>();
@@ -34,15 +37,24 @@ const BookPage: React.FC = observer(() => {
     }, [bookStore.book?.documentUrl, bookStore.book?.name]);  // Следим за изменениями URL и имени документа
 
     if (bookStore.isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <Layout style={{minHeight: "100vh"}}>
+                <Header/>
+                <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Loader/>
+                </Content>
+            </Layout>
+        );
     }
 
-    if (bookStore.error) {
-        return <div>Error: {bookStore.error}</div>;
-    }
-
-    if (!bookStore.book) {
-        return <div>No book found</div>;
+    if (bookStore.error || !bookStore.book) {
+        return(
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
+                <h1>Ой, что-то случилось и мы не нашли книжку, попробуйте ещё раз</h1>
+            </Content>
+        </Layout>);
     }
 
     return (

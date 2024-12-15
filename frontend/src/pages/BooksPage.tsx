@@ -4,17 +4,31 @@ import BookList from "../components/bookList.tsx";
 import {useStore} from "../Store/StoreContext.tsx";
 import React from "react";
 import {observer} from "mobx-react-lite";
+import Loader from "../components/loader.tsx";
 
 const { Content} = Layout;
 
 const BooksPage: React.FC = observer(() => {
     const { booksStore } = useStore();
 
-    if (booksStore.isLoading) return <div>Loading...</div>;
+    if (booksStore.isLoading) return (
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Loader/>
+            </Content>
+        </Layout>
+    );
 
-    if (booksStore.error) return <div>Error: {booksStore.error}</div>;
+    if (booksStore.error || booksStore.books.length == 0) return (
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
+                <h1>Упс, мы не нашли книжки, попробуйте ещё раз</h1>
+            </Content>
+        </Layout>
+    );
 
-    if (!booksStore.books) return <div>No book found</div>;
 
     return (
         <Layout style={{minHeight: "100vh"}}>

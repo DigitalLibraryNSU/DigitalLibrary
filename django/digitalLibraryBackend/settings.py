@@ -88,7 +88,7 @@ DATABASES = {
             'NAME': 'digital_library',
             'USER': 'librarian',
             'PASSWORD': 'password',
-            'HOST': 'localhost',
+            'HOST': 'postgres',
             'PORT': '5432',
         }
 }
@@ -96,7 +96,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'http://localhost:9200',
+        'hosts': 'http://elasticsearch:9200',
         # 'http_auth': ('elastic', 'EXzp=xxRznQPrOvDnSqf')
     }
 }

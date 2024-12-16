@@ -35,19 +35,13 @@ export const MainPage: React.FC = observer(() => {
         <Layout style={{ minHeight: "100vh" }}>
             <Header />
             <div className="container">
-                <div className="texts" style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div className="texts">
                     <span className="title">Жили-Были Library</span>
                     <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и открывать новые литературные произведения.
                         С помощью удобного интерфейса вы можете искать книги по автору, названию, теме или отрывку.
                         Откройте для себя мир книг с нашей библиотекой!</div>
-                    <div className="bottom">
-                        <div className="text-bottom">Возможно вам понравятся эти коллекции <ArrowRightOutlined className="arrow-right" /></div>
-
-                    </div>
                 </div>
-                <div style={{ display: "flex" , alignItems: "center", justifyContent: "center" }}>
-                    <Loader />
-                </div>
+                <Loader/>
             </div>
         </Layout>
     );

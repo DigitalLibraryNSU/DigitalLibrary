@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect} from "react";
 import styled from "styled-components";
-import { Header } from "../components/header";
-import { useParams } from "react-router-dom";
-import { useStore } from "../Store/StoreContext";
-import { observer } from "mobx-react-lite";
+import {Header} from "../components/header";
+import {useParams} from "react-router-dom";
+import {useStore} from "../Store/StoreContext";
+import {observer} from "mobx-react-lite";
 import {Layout} from "antd";
 import Loader from "../components/loader.tsx";
 import {Content} from "antd/es/layout/layout";
@@ -20,13 +20,13 @@ const BookPage: React.FC = observer(() => {
             return;
         }
         try {
-            console.log(bookStore.book.documentUrl);
             const response = await fetch(bookStore.book.documentUrl);
             if (!response.ok) throw new Error('Network response was not ok');
             const fileData = await response.blob();
             const link = document.createElement('a');
             link.href = URL.createObjectURL(fileData);
-            link.download = bookStore.book.name;
+            link.download = `${bookStore.book.name}.epub`;
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -34,7 +34,8 @@ const BookPage: React.FC = observer(() => {
             console.error('Download error:', error);
             alert('Failed to download file.');
         }
-    }, [bookStore.book?.documentUrl, bookStore.book?.name]);  // Следим за изменениями URL и имени документа
+    }, [bookStore.book?.documentUrl]);
+
 
     if (bookStore.isLoading) {
         return (

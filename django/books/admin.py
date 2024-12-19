@@ -19,26 +19,56 @@ class BookForm(forms.ModelForm):
                 temp_file.write(chunk)
 
             metadata = get_epub_metadata(temp_file.name)
+            print(metadata)
 
         if "error" in metadata:
             raise forms.ValidationError(metadata["error"])
 
-        self.instance.title = self.cleaned_data.get('title') or metadata.get('title', 'No Title')
-        self.instance.description = self.cleaned_data.get('description') or metadata.get('description', '')
-        self.instance.author = self.cleaned_data.get('author') or ', '.join(metadata.get('author', []))
-        self.instance.publisher = self.cleaned_data.get('publisher') or metadata.get('publisher', '')
 
-        published_date_str = metadata.get('date', '')
-        if (published_date_str is None):
-            year_str = ''
+        if (self.cleaned_data.get('title')):
+            self.instance.title = self.cleaned_data.get('title', '')
+        elif (metadata.get('title')):
+            self.instance.title = metadata.get('title', '')
         else:
-            year_str = published_date_str[:4]
+            self.instance.title = ""
 
-        self.instance.publishedAt = self.cleaned_data.get('publishedAt') or (
-            int(year_str) if year_str.isdigit() else None
+
+        if (self.cleaned_data.get('description', '')):
+            self.instance.description = self.cleaned_data.get('description', '')
+        elif (metadata.get('description', '')):
+            self.instance.description = metadata.get('description', '')
+        else:
+            self.instance.description = ""
+
+        if  (self.cleaned_data.get('author', '')):
+            self.instance.author = self.cleaned_data.get('author', '').strip()
+        elif (metadata.get('author', []) != [None]):
+            self.instance.author = ', '.join(metadata.get('author', []))
+        else:
+            self.instance.author = ""
+
+        if  (self.cleaned_data.get('publisher', '')):
+            self.instance.publisher = self.cleaned_data.get('author', '').strip()
+        elif (metadata.get('publisher', '')):
+            self.instance.publisher = ', '.join(metadata.get('author', []))
+        else:
+            self.instance.publisher = ""
+
+        # Обработка даты публикации
+        published_date_str = metadata.get('date', '')
+        year_str = published_date_str[:4] if published_date_str else ''
+        self.instance.publishedAt = (
+            self.cleaned_data.get('publishedAt')
+            or (int(year_str) if year_str.isdigit() else None)
         )
-
-        self.instance.image = self.cleaned_data.get('image') or get_epub_cover(temp_file.name)
+        print(self.cleaned_data)
+        if not self.cleaned_data.get('image'):
+            print(temp_file.name)
+            cover_file = get_epub_cover(temp_file.name)
+            print(cover_file)
+            if cover_file:
+                file_name = f"{self.instance.title}_cover.jpg"
+                self.instance.image.save(file_name, cover_file, save=False)
         os.remove(temp_file.name)
 
         return super().save(commit=commit)

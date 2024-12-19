@@ -80,26 +80,32 @@ def get_epub_metadata(file_path):
         return metadata
     except Exception as e:
         return {"error": f"Ошибка при обработке файла: {e}"}
+from ebooklib import epub
+from django.core.files.base import ContentFile
 
 def get_epub_cover(epub_path):
     """
-    :return сontentFile or None: The cover image as a Django ContentFile object, or None if no cover image is found.
+    :return: ContentFile or None: The first image as a Django ContentFile object, or None if no image is found.
     """
     try:
+        # Открываем EPUB файл
         book = epub.read_epub(epub_path)
 
+        # Перебираем все элементы EPUB
         for item in book.items:
-            if item.media_type.startswith('image') and 'cover' in item.get_name().lower():
+            if item.media_type.startswith('image'):
                 image_data = item.get_content()
-
                 file_extension = item.media_type.split('/')[-1]
-
                 file_name = f"cover.{file_extension}"
+                print(f"Found image: {file_name}")
                 return ContentFile(image_data, name=file_name)
 
     except Exception as e:
+        # Логируем ошибку
         print(f"Error extracting cover image: {e}")
+        print("Can't get cover")
 
+    # Если изображение не найдено, возвращаем None
     return None
 
 

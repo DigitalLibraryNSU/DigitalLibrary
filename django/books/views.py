@@ -58,7 +58,7 @@ class BookTitleSearch(APIView):
                     type="best_fields",
                     fuzziness="AUTO"
                 )
-            )[:10].execute()
+            ).execute()
 
             book_ids = [hit.meta.id for hit in results]
             books = Book.objects.filter(id__in=book_ids)
@@ -93,7 +93,10 @@ class BookThemeSearch(APIView):
             if result['hits']['total']['value'] == 0:
                 raise Book.DoesNotExist
 
-            book_ids = [hit.meta.id for hit in result]
+            for hit in result['hits']:
+                print(hit)
+
+            book_ids = [hit.meta.id for hit in result.hits]
             books = Book.objects.filter(id__in=book_ids)
 
             serializer = BookSerializer(books, many=True)

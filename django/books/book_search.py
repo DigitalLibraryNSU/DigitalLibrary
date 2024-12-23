@@ -10,8 +10,6 @@ import os
 from django.core.files.base import ContentFile
 from elasticsearch import Elasticsearch
 
-
-
 # Загрузка модели для создания эмбеддингов
 embedding_model = pipeline('feature-extraction', model='sentence-transformers/all-MiniLM-L6-v2')
 
@@ -114,6 +112,11 @@ def get_epub_cover(epub_path):
 def calculate_average_embedding(chapter_embeddings):
     return np.mean(chapter_embeddings, axis=0)
 
+# Функция для получения эмбеддинга книги
+def get_embedding(book_path):
+    chapter_embeddings = get_chapter_embeddings(book_path)
+    avg_embedding = calculate_average_embedding(chapter_embeddings)
+    return avg_embedding
 
 # Индексация книги в Elasticsearch
 # def index_book(book_id, title, author, avg_embedding):
@@ -138,43 +141,41 @@ def calculate_average_embedding(chapter_embeddings):
 #
 #     index_book(book_id, title, author, avg_embedding)
 
-def get_embedding(book_path):
-    chapter_embeddings = get_chapter_embeddings(book_path)
-    avg_embedding = calculate_average_embedding(chapter_embeddings)
-    return avg_embedding
 
 # Выполнение семантического поиска по запросу
 def search_best_matching_book(query_text):
-    client = Elasticsearch(
-        "http://localhost:9200/"
-    )
+    client = Elasticsearch("http://localhost:9200/")
     query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
 
-    # Поиск по индексу в Elasticsearch
-    resp = client.search(index="books", query={
-        "script_score": {
-            "query": {
-                "match_all": {}
+    try:
+        resp = client.search(
+            index="books",
+            body={
+                "query": {
+                    "script_score": {
+                        "query": {"match_all": {}},  # Сначала выбираем все документы
+                        "script": {
+                            "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
+                            "params": {"query_vector": query_embedding.tolist()},
+                        },
+                    },
+                },
+                "_source": ["title", "author", "description"],  # Возвращаем только нужные поля
             },
-            "script": {
-                "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-                "params": {
-                    "query_vector": query_embedding
-                }
-            }
-        }
-    })
-
-    return resp
-    # Проверка на наличие совпадений
-    # if resp['hits']['total']['value'] > 0:
-    #     best_match = resp['hits']['hits'][0]
-    #     print("Best matching book found:")
-    #     print(f"Title: {best_match['_source']['title']}")
-    #     print(f"Author: {best_match['_source']['author']}")
-    #     print(f"Score: {best_match['_score']}")
-    # else:
-    #     print("No suitable matches found.")
+        )
+        # Обработка результатов
+        if resp['hits']['total']['value'] > 0:
+            best_match = resp['hits']['hits'][0]
+            print("Best matching book found:")
+            print(f"Title: {best_match['_source']['title']}")
+            print(f"Author: {best_match['_source']['author']}")
+            print(f"Score: {best_match['_score']}")
+        else:
+            print("No suitable matches found.")
+        return resp
+    except Exception as e:
+        print(f"Elasticsearch query error: {e}")
+        return None
 
 
 # Индексация двух книг
@@ -193,5 +194,5 @@ def search_best_matching_book(query_text):
 #     print(f"Timestamp: {source.get('timestamp', 'No timestamp')}")
 #     print("-----------")
 # # Семантический поиск
-# search_term = input("Enter the search term for semantic search: ")
-# search_best_matching_book(search_term)
+#search_term = input("Enter the search term for semantic search: ")
+#print(search_best_matching_book(search_term))

@@ -3,8 +3,24 @@ import tempfile
 from django import forms
 from django.contrib import admin
 from .models import Book, Collection
-from .book_search import get_epub_metadata, get_epub_cover
+from .book_search import get_epub_metadata, get_epub_cover, get_embedding, get_chapters
+from elasticsearch import Elasticsearch
 
+# Функция для индексации книги
+def index_book(book_id, title, author, description, excerpts, embedding):
+    client = Elasticsearch("http://localhost:9200/")
+    doc = {
+        "title": title,
+        "author": author,
+        "description": description,
+        "excerpts": excerpts,
+        "embedding": embedding.tolist(),
+    }
+    try:
+        resp = client.index(index="books", id=book_id, document=doc)
+        print(f"Book {title} indexed: {resp['result']}")
+    except Exception as e:
+        print(f"Error indexing book: {e}")
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -44,12 +60,29 @@ class BookForm(forms.ModelForm):
         return super().save(commit=commit)
 
 
+
+
 class BookAdmin(admin.ModelAdmin):
     form = BookForm
 
     def save_model(self, request, obj, form, change):
-        form.save()
+        # Сохраняем объект в базе данных
+        super().save_model(request, obj, form, change)
 
+        # Генерируем эмбеддинг книги
+        book_path = obj.bookFile.path
+        embedding = get_embedding(book_path)
+        excerpts = get_chapters(book_path)
+
+        # Индексируем книгу в Elasticsearch
+        index_book(
+            book_id=obj.id,
+            title=obj.title,
+            author=obj.author,
+            description=obj.description,
+            excerpts=excerpts,
+            embedding=embedding
+        )
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(Collection)

@@ -18,7 +18,7 @@ class BooksStore {
     books: Book[] = [];
     isLoading = false;
     error = null;
-    apiAddress = "http://84.237.53.139:8000";
+    apiAddress = "https://digital-library.hopto.org/api";
 
 
     constructor() {
@@ -39,7 +39,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -63,7 +63,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -87,7 +87,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
             }));
         } catch (error: any) {
             this.error = error.message;
@@ -109,7 +109,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
             }));
         } catch (error: any) {
             this.error = error.message;
@@ -132,7 +132,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
             }));
         } catch (error: any) {
             this.error = error.message;

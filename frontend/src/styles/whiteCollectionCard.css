@@ -1,7 +1,8 @@
 .white-card {
     width: 100%; /* Автоматическая ширина */
     max-width: 400px; /* Ограничение максимальной ширины */
-    height: 250px; /* Высота зависит от контента */
+    min-width: 350px;
+    height: 250px; /* Высота будет зависеть от контента */
     margin: 10px;
     background-color: white;
     border: black solid 1px;

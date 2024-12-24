@@ -58,7 +58,7 @@ class BookTitleSearch(APIView):
                     type="best_fields",
                     fuzziness="AUTO"
                 )
-            )[:10].execute()
+            ).execute()
 
             book_ids = [hit.meta.id for hit in results]
             books = Book.objects.filter(id__in=book_ids)

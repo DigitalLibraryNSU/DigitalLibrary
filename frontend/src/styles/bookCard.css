@@ -4,8 +4,8 @@
     justify-content: center;
     align-items: center;
     border: black solid 1px;
-    margin: 10px; /* Унифицированные отступы */
-    width: 100%; /* Автоматическая ширина */
+    margin: 10px;
+    width: 100%;
     max-width: 250px; /* Ограничение максимальной ширины */
     height: auto; /* Высота адаптируется к контенту */
     background: white;

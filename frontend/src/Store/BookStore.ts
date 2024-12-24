@@ -18,7 +18,7 @@ class BookStore {
     book: Book | null = null;
     isLoading = false;
     error = null;
-    apiAddress = "http://84.237.53.139:8000";
+    apiAddress = "https://digital-library.hopto.org/api";
 
     constructor() {
         makeAutoObservable(this);
@@ -37,10 +37,10 @@ class BookStore {
                 name: book.title,
                 description: book.description || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`/${book.image}` : '',
-                documentName: book.title ? this.apiAddress+`/${book.title}` : '',
-                documentMime: book.book?.mime ? this.apiAddress+`/${book.book.mime}` : '',
-                documentUrl: book.bookFile ? this.apiAddress+`/${book.bookFile}` : ''
+                image: book.image ? this.apiAddress+`${book.image}` : '',
+                documentName: book.title ? this.apiAddress+`${book.title}` : '',
+                documentMime: book.book?.mime ? this.apiAddress+`${book.book.mime}` : '',
+                documentUrl: book.bookFile ? this.apiAddress+`${book.bookFile}` : ''
             };
         } catch (error: any) {
             this.error = error.message;

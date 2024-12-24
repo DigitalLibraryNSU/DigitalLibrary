@@ -13,9 +13,7 @@ services:
       - elk_network
 
   django:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: django-gunicorn:latest
     container_name: django
     environment:
       - DEBUG=true

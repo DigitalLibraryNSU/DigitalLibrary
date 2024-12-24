@@ -5,7 +5,7 @@ class CollectionsStore {
     collections = [];
     isLoading = false;
     error = null;
-    apiAddress = "http://84.237.53.139:8000";
+    apiAddress = "https://digital-library.hopto.org/api";
 
     constructor() {
         makeAutoObservable(this);

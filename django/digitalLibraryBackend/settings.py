@@ -16,7 +16,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,9 +25,13 @@ MEDIA_URL = '/media/'
 SECRET_KEY = 'django-insecure-^==w=($2won5j_1)jy35y9p40r@f^l#5l5rl62=_ky_2%mcj)z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['digital-library.hopto.org']
+
+CSRF_TRUSTED_ORIGINS = ['https://digital-library.hopto.org']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -97,6 +101,7 @@ DATABASES = {
 ELASTICSEARCH_DSL={
     'default': {
         'hosts': 'http://elasticsearch:9200',
+        'timeout': 10000,
         # 'http_auth': ('elastic', 'EXzp=xxRznQPrOvDnSqf')
     }
 }
@@ -136,7 +141,7 @@ DEFAULT_CHARSET = 'utf-8'
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / 'static'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

@@ -8,7 +8,7 @@ from elasticsearch import Elasticsearch
 
 # Функция для индексации книги
 def index_book(book_id, title, author, description, excerpts, embedding):
-    client = Elasticsearch("http://localhost:9200/")
+    client = Elasticsearch("http://elasticsearch:9200")
     doc = {
         "title": title,
         "author": author,

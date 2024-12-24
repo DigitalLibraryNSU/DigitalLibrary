@@ -138,7 +138,7 @@ def get_embedding(book_path):
 
 # Выполнение семантического поиска по запросу
 def search_best_matching_book(query_text):
-    client = Elasticsearch("http://localhost:9200/")
+    client = Elasticsearch("http://elasticsearch:9200")
     query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
 
     try:

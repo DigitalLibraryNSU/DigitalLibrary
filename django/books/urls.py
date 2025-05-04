@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+
 from . import views
 
 urlpatterns = [
@@ -10,4 +12,11 @@ urlpatterns = [
     path('bookByTitle/<str:book_title>/', views.BookTitleSearch.as_view(), name='book_by_title'),
     path('bookByExcerpt/<str:excerpt>/', views.BookExcerptSearch.as_view(), name='book_by_excerpt'),
     path('bookByTheme/<str:theme>/', views.BookThemeSearch.as_view(), name='book_by_theme'),
+
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

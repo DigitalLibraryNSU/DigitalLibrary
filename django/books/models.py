@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from digitalLibraryBackend import settings
@@ -28,3 +29,9 @@ class Collection(models.Model):
 
     def __str__(self):
         return self.title
+
+class LibraryUser(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']

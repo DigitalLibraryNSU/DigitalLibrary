@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-^==w=($2won5j_1)jy35y9p40r@f^l#5l5rl62=_ky_2%mcj)z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['digital-library.hopto.org']
+ALLOWED_HOSTS = ['digital-library.hopto.org', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://digital-library.hopto.org']
 
@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'books.apps.BooksConfig',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'corsheaders',
     'django_elasticsearch_dsl'
 ]
@@ -82,6 +84,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'digitalLibraryBackend.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+DJOSER = {
+    'USER_CREATE_SERIALIZER': 'yourapp.serializers.UserCreateSerializer',
+    'USER_SERIALIZER': 'yourapp.serializers.UserSerializer',
+    'LOGIN_FIELD': 'email',
+}
+
+AUTH_USER_MODEL = 'books.LibraryUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

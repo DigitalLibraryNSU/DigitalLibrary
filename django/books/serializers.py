@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Collection, LibraryUser
+from .models import Book, Collection, LibraryUser, Review
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
 
@@ -36,3 +36,8 @@ class UserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         model = LibraryUser
         fields = ('id', 'username', 'email')
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['title', 'body', 'rate', 'book']

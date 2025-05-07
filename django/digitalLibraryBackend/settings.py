@@ -25,9 +25,9 @@ MEDIA_URL = 'media/'
 SECRET_KEY = 'django-insecure-^==w=($2won5j_1)jy35y9p40r@f^l#5l5rl62=_ky_2%mcj)z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['digital-library.hopto.org', 'localhost']
+ALLOWED_HOSTS = ['digital-library.hopto.org', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://digital-library.hopto.org']
 
@@ -108,7 +108,7 @@ DATABASES = {
             'NAME': 'digital_library',
             'USER': 'librarian',
             'PASSWORD': 'password',
-            'HOST': 'postgres',
+            'HOST': 'localhost',
             'PORT': '5432',
         }
 }
@@ -116,7 +116,7 @@ DATABASES = {
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'http://elasticsearch:9200',
+        'hosts': 'http://localhost:9200',
         'timeout': 10000,
         # 'http_auth': ('elastic', 'EXzp=xxRznQPrOvDnSqf')
     }

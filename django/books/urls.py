@@ -22,4 +22,5 @@ urlpatterns = [
     path('docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     path('reviews/create/', ReviewCreateView.as_view(), name='review-create'),
+    path('reviews/<int:book_id>/', views.ReviewGetView.as_view(), name='review-detail'),
 ]

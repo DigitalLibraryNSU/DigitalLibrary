@@ -37,7 +37,17 @@ class UserSerializer(BaseUserSerializer):
         model = LibraryUser
         fields = ('id', 'username', 'email')
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReviewCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['title', 'body', 'rate', 'book']
+
+
+class ReviewGetSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    class Meta:
+        model = Review
+        fields = ['title', 'body', 'rate', 'username']
+
+    def get_username(self, obj):
+        return obj.user.username

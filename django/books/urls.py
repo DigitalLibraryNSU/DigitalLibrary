@@ -2,6 +2,7 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 from . import views
+from .views import ReviewCreateView
 
 urlpatterns = [
     path('books/', views.BookListCreate.as_view()),
@@ -19,4 +20,7 @@ urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    path('reviews/create/', ReviewCreateView.as_view(), name='review-create'),
+    path('reviews/<int:book_id>/', views.ReviewGetView.as_view(), name='review-detail'),
 ]

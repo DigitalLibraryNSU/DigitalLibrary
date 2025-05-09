@@ -1,9 +1,10 @@
 from elasticsearch_dsl.query import MultiMatch
 
 from django.db.models import Case, When
-from .models import Book, Collection
-from .serializers import BookSerializer, CollectionSerializer, CollectionSerializerWithIds
-from rest_framework import generics
+from .models import Book, Collection, Review
+from .serializers import BookSerializer, CollectionSerializer, CollectionSerializerWithIds, ReviewCreateSerializer, \
+    ReviewGetSerializer
+from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -134,3 +135,23 @@ class CollectionDetailView(APIView):
             return Response(serializer.data)
         except Collection.DoesNotExist:
             return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class ReviewCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = ReviewCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # автоматически ставит текущего пользователя
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReviewGetView(APIView):
+    def get(self, request, book_id):
+        try:
+            reviews = Review.objects.filter(book_id=book_id)
+            serializer = ReviewGetSerializer(reviews, many=True)
+            return Response(serializer.data)
+        except Collection.DoesNotExist:
+            return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
+

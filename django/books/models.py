@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from digitalLibraryBackend import settings
 
@@ -35,3 +36,13 @@ class LibraryUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+class Review(models.Model):
+    title = models.CharField(max_length=300)
+    body = models.TextField()
+    rate = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    user = models.ForeignKey(LibraryUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
+
+    def __str__(self):
+        return self.title

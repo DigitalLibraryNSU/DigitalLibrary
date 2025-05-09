@@ -2,7 +2,7 @@ import os
 import tempfile
 from django import forms
 from django.contrib import admin
-from .models import Book, Collection
+from .models import Book, Collection, Review
 from .book_search import get_epub_metadata, get_epub_cover, get_embedding, get_chapters
 from elasticsearch import Elasticsearch
 
@@ -116,3 +116,4 @@ class BookAdmin(admin.ModelAdmin):
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(Collection)
+admin.site.register(Review)

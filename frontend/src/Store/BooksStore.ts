@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
+import getAddress from "./apiAddress.ts"
 
 interface Book {
     id: string;
@@ -18,7 +19,7 @@ class BooksStore {
     books: Book[] = [];
     isLoading = false;
     error = null;
-    apiAddress = "https://digital-library.hopto.org/api";
+    apiAddress = getAddress;
 
 
     constructor() {
@@ -39,7 +40,7 @@ class BooksStore {
                 name: book.title,
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
-                image: book.image ? this.apiAddress+`${book.image}` : '',
+                image: book.image ? this.apiAddress +`${book.image}` : '',
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {

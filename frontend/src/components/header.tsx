@@ -1,8 +1,9 @@
 import "../styles/header.css"
-import {useState} from "react";
+import  {useState} from "react";
 import HeaderButton from "./headerButton.tsx";
 import { TiThMenu } from "react-icons/ti";
 import {useNavigate} from "react-router-dom";
+import {authStore} from "../Store/tokenStore.ts";
 
 export const Header = () => {
     const [isOpen, setOpen] = useState(false);
@@ -18,11 +19,25 @@ export const Header = () => {
                     <li className="header_nav-item" onClick={() => navigate("/smart_search")}>
                         <HeaderButton name="поиск"/>
                     </li>
-                </ul>
-            </nav>
-            <button className="header_menu-button" onClick={() => setOpen(!isOpen)}>
-                <TiThMenu />
-            </button>
+                    {authStore.isAuthenticated ? (
+                        < li className = "header_nav-item" onClick={() => navigate("/smart_search")}>
+                        <HeaderButton name="Профиль"/>
+                        </li>
+                        ) : (
+                        <li className="header_nav-item" onClick={() => (navigate("/authorization"))}>
+                    <HeaderButton name="Вход"/>
+                </li>
+                )}
+                {!authStore.isAuthenticated ? (
+                    <li className="header_nav-item" onClick={() => (navigate("/registration"))}>
+                        <HeaderButton name="Регистрация"/>
+                    </li>) : (<div></div>)}
+            </ul>
+
+        </nav>
+        <button className="header_menu-button" onClick={() => setOpen(!isOpen)}>
+        <TiThMenu/>
+        </button>
         </header>
-    )
+)
 }

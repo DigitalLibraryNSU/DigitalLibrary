@@ -60,19 +60,32 @@ const BookPage: React.FC = observer(() => {
 
     return (
         <StyledBookPage>
-            <Header />
-            <div className="book-container">
-                <div className="book-image">
-                    <img src={bookStore.book.image} alt={bookStore.book.name} />
+            <Header/>
+            <div className="book-container-all">
+                <div className="book-container small">
+                    <div className="book-image">
+                        <img src={bookStore.book.image} alt={bookStore.book.name}/>
+                    </div>
                 </div>
-                <div className="book-details">
-                    <h1 className="book-title">{bookStore.book.name}</h1>
-                    <h3 className="book-author">By {bookStore.book.author}</h3>
-                    <p className="book-description">{bookStore.book.description}</p>
-                    <button className="book-download" onClick={downloadFile}>
+                <div className="book-container big">
+                    <div className="book-details">
+                        <h1 className="book-title">{bookStore.book.name}</h1>
+                        <h3 className="book-author">By {bookStore.book.author}</h3>
+                        <p className="book-description">{bookStore.book.description}</p>
+                        <button className="book-download" onClick={downloadFile}>
                         Download book
-                    </button>
+                        </button>
+                    </div>
                 </div>
+            </div>
+            <div className="review-container">
+                <h1 className="book-title">Reviews</h1>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
             </div>
         </StyledBookPage>
     );
@@ -80,22 +93,47 @@ const BookPage: React.FC = observer(() => {
 
 
 const StyledBookPage = styled.div`
+    font-family: Broadleaf;
     padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     min-height: 100vh;
     background-color: #f5f5f5;
+    gap: 30px;
 
-    .book-container {
-        margin-top: 90px;
+    .book-container-all {
         display: flex;
         flex-direction: row;
+        gap: 30px
+    }
+
+    .small {
+        flex: 1;
+    }
+
+    .big {
+        flex: 3;
+    }
+    .review-container {
+        display: flex;
+        flex-direction: column;
         background: white;
         padding: 40px;
         border-radius: 10px;
         border: black solid 1px;
-        min-height: 80vh;
+        min-height: 70vh;
+        width: 100%;
+    }
+
+    .book-container {
+        margin-top: 80px;
+        display: flex;
+        flex-direction: row;
+        background: white;
+        padding: 50px;
+        border-radius: 10px;
+        border: black solid 1px;
+        min-height: 70vh;
         width: 100%;
     }
 
@@ -118,7 +156,6 @@ const StyledBookPage = styled.div`
         font-family: Broadleaf;
         flex: 2;
         display: flex;
-        align-items: center;
         flex-direction: column;
     }
 
@@ -180,6 +217,7 @@ const StyledBookPage = styled.div`
         height: 40px;
         width: 130px;
         border-radius: 10px;
+        align-self: center;
     }
     
     @media (max-width: 576px) {

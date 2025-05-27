@@ -3,24 +3,24 @@ import tempfile
 from django import forms
 from django.contrib import admin
 from .models import Book, Collection, Review
-from .book_search import get_epub_metadata, get_epub_cover, get_embedding, get_chapters
+from .book_search import get_epub_metadata, get_epub_cover, get_embedding, get_chapters, index_book
 from elasticsearch import Elasticsearch
 
-# Функция для индексации книги
-def index_book(book_id, title, author, description, excerpts, embedding):
-    client = Elasticsearch("http://elasticsearch:9200")
-    doc = {
-        "title": title,
-        "author": author,
-        "description": description,
-        "excerpts": excerpts,
-        "embedding": embedding.tolist(),
-    }
-    try:
-        resp = client.index(index="books", id=book_id, document=doc)
-        print(f"Book {title} indexed: {resp['result']}")
-    except Exception as e:
-        print(f"Error indexing book: {e}")
+# # Функция для индексации книги
+# def index_book(book_id, title, author, description, excerpts, embedding):
+#     client = Elasticsearch("http://elasticsearch:9200")
+#     doc = {
+#         "title": title,
+#         "author": author,
+#         "description": description,
+#         "excerpts": excerpts,
+#         "embedding": embedding.tolist(),
+#     }
+#     try:
+#         resp = client.index(index="books", id=book_id, document=doc)
+#         print(f"Book {title} indexed: {resp['result']}")
+#     except Exception as e:
+#         print(f"Error indexing book: {e}")
 
 class BookForm(forms.ModelForm):
     class Meta:

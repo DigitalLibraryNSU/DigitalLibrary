@@ -119,16 +119,20 @@ def get_embedding(book_path):
     return avg_embedding
 
 # Индексация книги в Elasticsearch
-# def index_book(book_id, title, author, avg_embedding):
-#     doc = {
-#         "title": title,
-#         "author": author,
-#         "embedding": avg_embedding.tolist(),
-#         "timestamp": datetime.now(),
-#     }
-#     resp = client.index(index="books-index", id=book_id, document=doc)
-#     print(f"Book {title} indexed: {resp['result']}")
-
+def index_book(book_id, title, author, description, excerpts, embedding):
+    client = Elasticsearch("http://elasticsearch:9200")
+    doc = {
+        "title": title,
+        "author": author,
+        "description": description,
+        "excerpts": excerpts,
+        "embedding": embedding.tolist(),
+    }
+    try:
+        resp = client.index(index="books", id=book_id, document=doc)
+        print(f"Book {title} indexed: {resp['result']}")
+    except Exception as e:
+        print(f"Error indexing book: {e}")
 
 # Обработка книги: извлечение эмбеддингов, расчёт среднего эмбеддинга и индексация
 # def process_and_index_book(book_path, book_id):

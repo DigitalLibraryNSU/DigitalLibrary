@@ -121,18 +121,28 @@ def get_embedding(book_path):
 # Индексация книги в Elasticsearch
 def index_book(book_id, title, author, description, excerpts, embedding):
     client = Elasticsearch("http://elasticsearch:9200")
-    doc = {
-        "title": title,
-        "author": author,
-        "description": description,
-        "excerpts": excerpts,
-        "embedding": embedding.tolist(),
-    }
+
+    # Ensure embedding is valid before indexing
+    if embedding is None or len(embedding) == 0:
+        print(f"Warning: No embedding for book {title}")
+        return
+
     try:
+        # Ensure embedding is a proper numpy array and convert to list
+        embedding_list = np.array(embedding, dtype=np.float32).tolist()
+
+        doc = {
+            "title": title,
+            "author": author,
+            "description": description,
+            "excerpts": excerpts,
+            "embedding": embedding_list,
+        }
         resp = client.index(index="books", id=book_id, document=doc)
         print(f"Book {title} indexed: {resp['result']}")
     except Exception as e:
-        print(f"Error indexing book: {e}")
+        print(f"Error indexing book {title}: {e}")
+
 
 # Обработка книги: извлечение эмбеддингов, расчёт среднего эмбеддинга и индексация
 # def process_and_index_book(book_path, book_id):
@@ -149,7 +159,7 @@ def index_book(book_id, title, author, description, excerpts, embedding):
 # Выполнение семантического поиска по запросу
 def search_best_matching_book(query_text):
     client = Elasticsearch("http://elasticsearch:9200")
-    query_embedding = generate_embedding(query_text)  # Генерация эмбеддинга для запроса
+    query_embedding = generate_embedding(query_text)
 
     try:
         resp = client.search(
@@ -157,17 +167,17 @@ def search_best_matching_book(query_text):
             body={
                 "query": {
                     "script_score": {
-                        "query": {"match_all": {}},  # Сначала выбираем все документы
+                        "query": {"match_all": {}},
                         "script": {
                             "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
                             "params": {"query_vector": query_embedding.tolist()},
                         },
                     },
                 },
-                "_source": ["title", "author", "description"],  # Возвращаем только нужные поля
+                "_source": ["title", "author", "description"],
             },
         )
-        # Обработка результатов
+
         if resp['hits']['total']['value'] > 0:
             best_match = resp['hits']['hits'][0]
             print("Best matching book found:")
@@ -176,10 +186,18 @@ def search_best_matching_book(query_text):
             print(f"Score: {best_match['_score']}")
         else:
             print("No suitable matches found.")
+
         return resp
+
     except Exception as e:
         print(f"Elasticsearch query error: {e}")
-        return None
+        # Return empty response structure instead of None
+        return {
+            'hits': {
+                'total': {'value': 0},
+                'hits': []
+            }
+        }
 
 
 # Индексация двух книг

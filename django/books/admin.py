@@ -3,7 +3,7 @@ import tempfile
 from django import forms
 from django.contrib import admin
 from .models import Book, Collection, Review
-from .book_search import get_epub_metadata, get_epub_cover, get_embedding, get_chapters, index_book
+from .book_search import get_epub_metadata, get_epub_cover, get_book_embedding, get_chapters, index_book
 from elasticsearch import Elasticsearch
 
 # # Функция для индексации книги
@@ -101,7 +101,7 @@ class BookAdmin(admin.ModelAdmin):
 
         # Генерируем эмбеддинг книги
         book_path = obj.bookFile.path
-        embedding = get_embedding(book_path)
+        embedding = get_book_embedding(book_path)
         excerpts = get_chapters(book_path)
 
         # Индексируем книгу в Elasticsearch

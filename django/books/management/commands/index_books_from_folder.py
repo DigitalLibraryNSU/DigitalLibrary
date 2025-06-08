@@ -3,7 +3,7 @@ import tempfile
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from books.models import Book
-from books.book_search import get_epub_metadata, get_embedding, get_chapters, index_book, get_epub_cover
+from books.book_search import get_epub_metadata, get_book_embedding, get_chapters, index_book, get_epub_cover
 
 
 class Command(BaseCommand):
@@ -86,7 +86,7 @@ class Command(BaseCommand):
                     book.save()
 
                     # Generate embedding and index in Elasticsearch
-                    embedding = get_embedding(temp_file_path)
+                    embedding = get_book_embedding(temp_file_path)
                     excerpts = get_chapters(temp_file_path)
                     index_book(
                         book_id=book.id,

@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.contrib.auth.models import AbstractUser
 from django.core.files.storage import FileSystemStorage
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -43,6 +45,8 @@ class Review(models.Model):
     rate = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     user = models.ForeignKey(LibraryUser, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title

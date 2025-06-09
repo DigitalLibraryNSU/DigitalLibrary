@@ -113,10 +113,11 @@ DATABASES = {
         }
 }
 
+ELASTIC_URL = 'http://localhost:9200'
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'http://localhost:9200',
+        'hosts': ELASTIC_URL,
         'timeout': 10000,
         # 'http_auth': ('elastic', 'EXzp=xxRznQPrOvDnSqf')
     }

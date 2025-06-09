@@ -1,6 +1,9 @@
 from elasticsearch_dsl.query import MultiMatch
 
 from django.db.models import Case, When
+
+from .booksRecommendations import getBooksSuggestionForCollection
+from .collectionEmbeddingUtils import get_collection_embedding_by_book_ids
 from .models import Book, Collection, Review
 from .serializers import BookSerializer, CollectionSerializer, CollectionSerializerWithIds, ReviewCreateSerializer, \
     ReviewGetSerializer
@@ -164,81 +167,7 @@ class ReviewGetView(APIView):
 class CollectionBookSuggestionsView(APIView):
     def get(self, request, collection_id):
         try:
-            # Retrieve the collection and its book IDs
-            collection = Collection.objects.get(id=collection_id)
-            book_ids = [str(book.id) for book in collection.books.all()]
-            if not book_ids:
-                return Response({"message": "No books in the collection to base suggestions on."},
-                                status=status.HTTP_400_BAD_REQUEST)
-
-            # Connect to Elasticsearch
-            client = Elasticsearch("http://elasticsearch:9200")
-
-            # Fetch embeddings of books in the collection
-            resp = client.search(
-                index="books",
-                body={
-                    "query": {
-                        "terms": {
-                            "_id": book_ids
-                        }
-                    },
-                    "_source": ["embedding"]
-                }
-            )
-            # Replace the embeddings extraction with safer code
-            embeddings = []
-            for hit in resp['hits']['hits']:
-                if '_source' in hit and 'embedding' in hit['_source']:
-                    embedding_data = hit['_source']['embedding']
-                    if embedding_data and isinstance(embedding_data, list) and len(embedding_data) > 0:
-                        try:
-                            embedding_array = np.array(embedding_data, dtype=np.float32)
-                            if not np.isnan(embedding_array).any() and not np.isinf(embedding_array).any():
-                                embeddings.append(embedding_array)
-                        except (ValueError, TypeError) as e:
-                            print(f"Invalid embedding for book {hit['_id']}: {e}")
-                            continue
-
-            if not embeddings:
-                return Response(
-                    {"message": "No valid embeddings found for books in this collection."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-            # Compute the average embedding
-            average_embedding = np.mean(embeddings, axis=0)
-
-            # Search for similar books, excluding those already in the collection
-            search_resp = client.search(
-                index="books",
-                body={
-                    "query": {
-                        "script_score": {
-                            "query": {
-                                "bool": {
-                                    "must_not": {
-                                        "terms": {
-                                            "_id": book_ids
-                                        }
-                                    }
-                                }
-                            },
-                            "script": {
-                                "source": "cosineSimilarity(params.query_vector, 'embedding') + 1.0",
-                                "params": {"query_vector": average_embedding.tolist()},
-                            },
-                        }
-                    },
-                    "_source": ["title", "author", "description"],
-                    "size": 10  # Return top 10 suggestions
-                }
-            )
-
-            # Extract book IDs and preserve order based on similarity score
-            suggested_book_ids = [int(hit['_id']) for hit in search_resp['hits']['hits']]
-            order = Case(*[When(id=book_id, then=pos) for pos, book_id in enumerate(suggested_book_ids)])
-            suggested_books = Book.objects.filter(id__in=suggested_book_ids).order_by(order)
+            suggested_books = getBooksSuggestionForCollection(collection_id)
 
             # Serialize and return the suggestions
             serializer = BookSerializer(suggested_books, many=True)
@@ -246,5 +175,5 @@ class CollectionBookSuggestionsView(APIView):
 
         except Collection.DoesNotExist:
             return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # except Exception as e:
+        #     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

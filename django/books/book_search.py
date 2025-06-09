@@ -1,14 +1,10 @@
 from transformers import pipeline
 import numpy as np
 import ebooklib
-from ebooklib import epub
 from bs4 import BeautifulSoup
-from datetime import datetime
-from PIL import Image
-from io import BytesIO
-import os
-from django.core.files.base import ContentFile
 from elasticsearch import Elasticsearch
+
+from digitalLibraryBackend.settings import ELASTIC_URL
 
 # Загрузка модели для создания эмбеддингов
 embedding_model = pipeline('feature-extraction', model='sentence-transformers/all-MiniLM-L6-v2')
@@ -113,14 +109,14 @@ def calculate_average_embedding(chapter_embeddings):
     return np.mean(chapter_embeddings, axis=0)
 
 # Функция для получения эмбеддинга книги
-def get_embedding(book_path):
+def get_book_embedding(book_path):
     chapter_embeddings = get_chapter_embeddings(book_path)
     avg_embedding = calculate_average_embedding(chapter_embeddings)
     return avg_embedding
 
 # Индексация книги в Elasticsearch
 def index_book(book_id, title, author, description, excerpts, embedding):
-    client = Elasticsearch("http://elasticsearch:9200")
+    client = Elasticsearch(ELASTIC_URL)
 
     # Ensure embedding is valid before indexing
     if embedding is None or len(embedding) == 0:
@@ -158,7 +154,7 @@ def index_book(book_id, title, author, description, excerpts, embedding):
 
 # Выполнение семантического поиска по запросу
 def search_best_matching_book(query_text):
-    client = Elasticsearch("http://elasticsearch:9200")
+    client = Elasticsearch(ELASTIC_URL)
     query_embedding = generate_embedding(query_text)
 
     try:

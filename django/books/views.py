@@ -11,14 +11,13 @@ from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from elasticsearch import Elasticsearch
 import numpy as np
+from .booksRecommendations import get_book_recommendations_for_user
 
 from .documents import BookDocument
 from .book_search import search_best_matching_book
+
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -43,11 +42,11 @@ class BookAuthorSearch(APIView):
         try:
             results = BookDocument.search().query(
                 MultiMatch(
-                query=book_author,
-                fields=['author'],
-                type="best_fields",
-                fuzziness="AUTO"
-            )
+                    query=book_author,
+                    fields=['author'],
+                    type="best_fields",
+                    fuzziness="AUTO"
+                )
             )[:10].execute()
             book_ids = [hit.meta.id for hit in results]
             books = Book.objects.filter(id__in=book_ids)
@@ -56,6 +55,7 @@ class BookAuthorSearch(APIView):
             return Response(serializer.data)
         except Book.DoesNotExist:
             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class BookTitleSearch(APIView):
     def get(self, request, book_title):
@@ -102,7 +102,9 @@ class BookExcerptSearch(APIView):
 
         except Exception as e:
             print(f"Error during search: {e}")
-            return Response({"error": "An error occurred during the search."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": "An error occurred during the search."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class BookThemeSearch(APIView):
     def get(self, request, theme):
@@ -120,7 +122,7 @@ class BookThemeSearch(APIView):
                 books = Book.objects.filter(id__in=book_ids).order_by(order)
 
                 serializer = BookSerializer(books, many=True)
-                #print(book_ids)
+                # print(book_ids)
                 print(books)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -128,6 +130,7 @@ class BookThemeSearch(APIView):
 
         except Book.DoesNotExist:
             return Response({"error": "Book not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 class CollectionListCreate(generics.ListCreateAPIView):
     queryset = Collection.objects.all()
@@ -144,6 +147,7 @@ class CollectionDetailView(APIView):
         except Collection.DoesNotExist:
             return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
 class ReviewCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -153,6 +157,7 @@ class ReviewCreateView(APIView):
             serializer.save(user=request.user)  # автоматически ставит текущего пользователя
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ReviewGetView(APIView):
     def get(self, request, book_id):
@@ -177,3 +182,18 @@ class CollectionBookSuggestionsView(APIView):
             return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
         # except Exception as e:
         #     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserBookRecommendationsView(APIView):
+    def get(self, request, user_id):
+        try:
+            # Получаем рекомендации
+            recommended_books = get_book_recommendations_for_user(user_id)
+            # Сериализуем результаты
+            serializer = BookSerializer(recommended_books, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": "Произошла ошибка при получении рекомендаций."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

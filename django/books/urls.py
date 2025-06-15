@@ -2,7 +2,7 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CollectionBookSuggestionsView
+from .views import CollectionBookSuggestionsView, UserBookRecommendationsView
 
 from . import views
 from .views import ReviewCreateView
@@ -30,5 +30,7 @@ urlpatterns = [
 
                   path('collections/<int:collection_id>/suggestions/', CollectionBookSuggestionsView.as_view(),
                        name='collection-suggestions'),
+                  path('users/<int:user_id>/recommendations/', UserBookRecommendationsView.as_view(),
+                       name='user-recommendations'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

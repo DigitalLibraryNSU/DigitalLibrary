@@ -30,7 +30,7 @@ urlpatterns = [
 
                   path('collections/<int:collection_id>/suggestions/', CollectionBookSuggestionsView.as_view(),
                        name='collection-suggestions'),
-                  path('users/<int:user_id>/recommendations/', UserBookRecommendationsView.as_view(),
+                  path('books/recommendations/', UserBookRecommendationsView.as_view(),
                        name='user-recommendations'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

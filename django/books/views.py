@@ -1,9 +1,9 @@
 from elasticsearch_dsl.query import MultiMatch
 
 from django.db.models import Case, When
+from rest_framework.exceptions import ValidationError
 
 from .booksRecommendations import getBooksSuggestionForCollection
-from .collectionEmbeddingUtils import get_collection_embedding_by_book_ids
 from .models import Book, Collection, Review
 from .serializers import BookSerializer, CollectionSerializer, CollectionSerializerWithIds, ReviewCreateSerializer, \
     ReviewGetSerializer
@@ -11,8 +11,6 @@ from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from elasticsearch import Elasticsearch
-import numpy as np
 from .booksRecommendations import get_book_recommendations_for_user
 
 from .documents import BookDocument
@@ -185,10 +183,12 @@ class CollectionBookSuggestionsView(APIView):
 
 
 class UserBookRecommendationsView(APIView):
-    def get(self, request, user_id):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
         try:
             # Получаем рекомендации
-            recommended_books = get_book_recommendations_for_user(user_id)
+            recommended_books = get_book_recommendations_for_user(request.user.id)
             # Сериализуем результаты
             serializer = BookSerializer(recommended_books, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -15,6 +15,7 @@ services:
   django:
     image: django-gunicorn:latest
     container_name: django
+    command: gunicorn digitalLibraryBackend.wsgi:application --bind 0.0.0.0:8000 --workers 5 --timeout 600
     environment:
       - DEBUG=true
       - DJANGO_SETTINGS_MODULE=digitalLibraryBackend.settings

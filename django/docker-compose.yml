@@ -35,6 +35,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: digital_library
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:

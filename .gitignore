@@ -6,3 +6,4 @@ django/books/migrations/__pycache__/
 django/books/__pycache__/
 django/digitalLibraryBackend/__pycache__/
 django/static/
+django/pgdata/

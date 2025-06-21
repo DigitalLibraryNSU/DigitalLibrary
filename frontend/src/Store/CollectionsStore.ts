@@ -1,11 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
+import getAddress from "./apiAddress.ts";
 
 class CollectionsStore {
     collections = [];
     isLoading = false;
     error = null;
-    apiAddress = "https://digital-library.hopto.org/api";
+    apiAddress = getAddress;
 
     constructor() {
         makeAutoObservable(this);
@@ -18,7 +19,7 @@ class CollectionsStore {
 
         try {
             console.log("Fetching collections...");  // Лог для проверки начала запроса
-            const response = await axios.get(this.apiAddress+"/collections/?format=json");
+            const response = await axios.get(this.apiAddress+"/collections/");
             console.log("API response:", response);
             this.collections = response.data.map((category: any) => ({
                 id: category.id,

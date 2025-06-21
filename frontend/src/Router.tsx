@@ -5,6 +5,8 @@ import SearchPage from "./pages/SearchPage.tsx";
 import CollectionPage from "./pages/CollectionPage.tsx";
 import BooksPage from "./pages/BooksPage.tsx";
 import BookPage from "./pages/BookPage.tsx";
+import AuthorizationPage from "./pages/AuthorizationPage.tsx";
+import RegistrationPage from "./pages/RegistrationPage.tsx";
 
 function Router() {
     return (
@@ -16,6 +18,8 @@ function Router() {
                 <Route path="/smart_search/books" element={<BooksPage/>} />
                 <Route path="/books/:bookId" element={<BookPage/>} />
                 <Route path="/collections/:collectionId" element={<CollectionPage/>} />
+                <Route path="/authorization" element={<AuthorizationPage/>} />
+                <Route path="/registration" element={<RegistrationPage/>} />
             </Routes>
         </BrowserRouter>
     );

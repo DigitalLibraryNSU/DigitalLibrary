@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
+import getAddress from "./apiAddress.ts";
 
 
 interface Book {
@@ -18,7 +19,7 @@ class BookStore {
     book: Book | null = null;
     isLoading = false;
     error = null;
-    apiAddress = "https://digital-library.hopto.org/api";
+    apiAddress = getAddress;
 
     constructor() {
         makeAutoObservable(this);

@@ -3,8 +3,71 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import userReviewsStore from "../Store/ReviewsStore.ts";
 import { Header } from "../components/header.tsx";
-import "../styles/reviewsPage.css";
-import {authStore} from "../Store/tokenStore.ts";
+import { authStore } from "../Store/tokenStore.ts";
+import styled from "styled-components";
+
+// Стилизованные компоненты
+const ReviewsContainer = styled.div`
+    margin-top: 20px;
+    padding: 100px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .big-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+    }
+`;
+
+const ReviewItem = styled.div`
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 2px solid #ff9900;
+    }
+
+    h3 {
+        margin: 0 0 5px;
+        font-size: 18px;
+        color: #333;
+        font-family: 'RuslanDisplay', sans-serif;
+    }
+
+    p {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .review-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 13px;
+        color: #777;
+    }
+
+    .review-rating {
+        font-weight: bold;
+        color: #ff9900;
+        font-size: 16px;
+    }
+`;
+
+const Title = styled.h1`
+  font-family: 'RuslanDisplay', sans-serif;
+  font-size: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+`;
 
 const MyReviewsPage = observer(() => {
     const navigate = useNavigate();
@@ -22,79 +85,42 @@ const MyReviewsPage = observer(() => {
         };
     }, [navigate]);
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('ru-RU');
+    const handleReviewClick = (bookId: string) => {
+        navigate(`/books/${bookId}`);
     };
 
     return (
-        <div className="reviews-container">
+        <ReviewsContainer>
             <Header />
-            <h1 className="reviews-title">Мои отзывы</h1>
+            <div className="big-container">
+                <Title>Мои отзывы</Title>
 
-            {userReviewsStore.isLoading ? (
-                <div className="loading">Загрузка...</div>
-            ) : userReviewsStore.error ? (
-                <div className="error-message">{userReviewsStore.error}</div>
-            ) : userReviewsStore.reviews.length === 0 ? (
-                <div className="no-reviews">У вас пока нет отзывов</div>
-            ) : (
-                <>
-                    <div className="reviews-list">
+                {userReviewsStore.isLoading ? (
+                    <div style={{ textAlign: 'center' }}>Загрузка...</div>
+                ) : userReviewsStore.error ? (
+                    <div style={{ color: 'red', textAlign: 'center' }}>{userReviewsStore.error}</div>
+                ) : userReviewsStore.reviews.length === 0 ? (
+                    <div style={{ textAlign: 'center' }}>У вас пока нет отзывов</div>
+                ) : (
+                    <div className="reviews-container">
                         {userReviewsStore.reviews.map((review) => (
-                            <div key={review.id} className="review-card">
-                                <div className="review-header">
-                                    <h3 className="book-title">
-                                        {review.book_title}
-                                    </h3>
-                                    <div className="review-meta">
-                                        <span className="review-date">{formatDate(review.created_at)}</span>
-                                        <div className="review-rating">
-                                            {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-                                        </div>
-                                    </div>
+                            <ReviewItem
+                                key={review.username}
+                                onClick={() => handleReviewClick(review.book)}
+                            >
+                                <h3>{review.title}</h3>
+                                <p>{review.body}</p>
+                                <div className="review-meta">
+                                    <span className="review-rating">
+                                        {'★'.repeat(review.rate)}{'☆'.repeat(5 - review.rate)}
+                                    </span>
                                 </div>
-                                <p className="review-text">{review.text}</p>
-                                <div className="review-actions">
-                                    <button
-                                        className="edit-button"
-                                        onClick={() => navigate(`/edit-review/${review.id}`)}
-                                    >
-                                        Редактировать
-                                    </button>
-                                    <button
-                                        className="delete-button"
-                                        onClick={() => userReviewsStore.deleteReview(review.id)}
-                                    >
-                                        Удалить
-                                    </button>
-                                </div>
-                            </div>
+                            </ReviewItem>
                         ))}
                     </div>
-
-                    {userReviewsStore.totalPages > 1 && (
-                        <div className="pagination">
-                            <button
-                                disabled={userReviewsStore.currentPage === 1}
-                                onClick={() => userReviewsStore.setPage(userReviewsStore.currentPage - 1)}
-                            >
-                                Назад
-                            </button>
-                            <span>
-                                Страница {userReviewsStore.currentPage} из {userReviewsStore.totalPages}
-                            </span>
-                            <button
-                                disabled={userReviewsStore.currentPage === userReviewsStore.totalPages}
-                                onClick={() => userReviewsStore.setPage(userReviewsStore.currentPage + 1)}
-                            >
-                                Вперед
-                            </button>
-                        </div>
-                    )}
-                </>
-            )}
-        </div>
+                )}
+            </div>
+        </ReviewsContainer>
     );
 });
 

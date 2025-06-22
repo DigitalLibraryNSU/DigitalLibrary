@@ -8,6 +8,7 @@ interface Review {
     body: string;
     rate: number;
     username: string;
+    book: string;
 }
 
 class BookReviewsStore {
@@ -46,6 +47,7 @@ class BookReviewsStore {
                 body: review.body,
                 rate: review.rate,
                 username: review.username,
+                book: review.book,
             }));
         } catch (error: any) {
             this.error = error.response?.data?.message || error.message;
@@ -98,7 +100,7 @@ class BookReviewsStore {
 
         try {
             const response = await axios.get(
-                `${this.apiAddress}/api/reviews/byUser`,
+                `${this.apiAddress}/reviews/byUser/`,
                 {
                     headers: {
                         Authorization: `Token ${authStore.token}`,
@@ -110,6 +112,7 @@ class BookReviewsStore {
                 body: review.body,
                 rate: review.rate,
                 username: review.username,
+                book: review.book,
             }));
         } catch (err) {
             this.error = 'Не удалось загрузить отзывы';

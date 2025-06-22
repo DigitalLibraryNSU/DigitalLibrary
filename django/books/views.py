@@ -6,7 +6,7 @@ from rest_framework.exceptions import ValidationError
 from .booksRecommendations import getBooksSuggestionForCollection
 from .models import Book, Collection, Review
 from .serializers import BookSerializer, CollectionSerializer, CollectionSerializerWithIds, ReviewCreateSerializer, \
-    ReviewGetSerializer
+    ReviewGetSerializer, ReviewByUserSerializer
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -162,6 +162,20 @@ class ReviewGetView(APIView):
         try:
             reviews = Review.objects.filter(book_id=book_id)
             serializer = ReviewGetSerializer(reviews, many=True)
+            return Response(serializer.data)
+        except Collection.DoesNotExist:
+            return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReviewsByUserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user_id = request.user.id
+            reviews = Review.objects.filter(user_id=user_id)
+            serializer = ReviewByUserSerializer(reviews, many=True)
+
             return Response(serializer.data)
         except Collection.DoesNotExist:
             return Response({"error": "Collection not found"}, status=status.HTTP_404_NOT_FOUND)

@@ -2,7 +2,7 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CollectionBookSuggestionsView, UserBookRecommendationsView
+from .views import CollectionBookSuggestionsView, UserBookRecommendationsView, ReviewsByUserView
 
 from . import views
 from .views import ReviewCreateView
@@ -27,6 +27,7 @@ urlpatterns = [
 
                   path('reviews/create/', ReviewCreateView.as_view(), name='review-create'),
                   path('reviews/<int:book_id>/', views.ReviewGetView.as_view(), name='review-detail'),
+                  path('reviews/byUser/', ReviewsByUserView.as_view(), name='review-by-user'),
 
                   path('collections/<int:collection_id>/suggestions/', CollectionBookSuggestionsView.as_view(),
                        name='collection-suggestions'),

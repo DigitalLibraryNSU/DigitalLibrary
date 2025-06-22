@@ -51,3 +51,12 @@ class ReviewGetSerializer(serializers.ModelSerializer):
 
     def get_username(self, obj):
         return obj.user.username
+
+class ReviewByUserSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    class Meta:
+        model = Review
+        fields = ['book', 'title', 'body', 'rate', 'username']
+
+    def get_username(self, obj):
+        return obj.user.username

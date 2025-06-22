@@ -7,6 +7,8 @@ import BooksPage from "./pages/BooksPage.tsx";
 import BookPage from "./pages/BookPage.tsx";
 import AuthorizationPage from "./pages/AuthorizationPage.tsx";
 import RegistrationPage from "./pages/RegistrationPage.tsx";
+import MyReviewsPage from "./pages/UsersReviews.tsx";
+import RecommendationsPage from "./pages/RecommendationsPage.tsx";
 
 function Router() {
     return (
@@ -20,6 +22,8 @@ function Router() {
                 <Route path="/collections/:collectionId" element={<CollectionPage/>} />
                 <Route path="/authorization" element={<AuthorizationPage/>} />
                 <Route path="/registration" element={<RegistrationPage/>} />
+                <Route path="/reviews" element={<MyReviewsPage/>} />
+                <Route path="/recommendations" element={<RecommendationsPage/>} />
             </Routes>
         </BrowserRouter>
     );

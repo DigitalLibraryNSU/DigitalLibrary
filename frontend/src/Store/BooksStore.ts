@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import axios from "axios";
 import getAddress from "./apiAddress.ts"
+import {authStore} from "./tokenStore.ts";
 
 interface Book {
     id: string;
@@ -127,6 +128,37 @@ class BooksStore {
 
         try {
             const response = await axios.get(this.apiAddress+`/bookByTheme/${topic}/?format=json`);
+            this.books = response.data.map((book: any) => ({
+                id: book.id,
+                documentId: book.id,
+                name: book.title,
+                description: book.description.slice(0, 200)+"..." || '',
+                author: book.author || '',
+                image: book.image ? this.apiAddress+`${book.image}` : '',
+            }));
+        } catch (error: any) {
+            this.error = error.message;
+            console.error("Error fetching books:", error);
+        } finally {
+            this.isLoading = false;
+        }
+    }
+
+
+    async fetchBooksByRecommendations() {
+        this.isLoading = true;
+        this.error = null;
+
+        try {
+            const response = await axios.get(
+                `${this.apiAddress}/books/recommendations/?format=json`,
+                {
+                    headers: {
+                        'Authorization': `Token ${authStore.token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+                );
             this.books = response.data.map((book: any) => ({
                 id: book.id,
                 documentId: book.id,

@@ -6,6 +6,7 @@ import {useStore} from "../Store/StoreContext";
 import {observer} from "mobx-react-lite";
 import {Layout} from "antd";
 import Loader from "../components/loader.tsx";
+import Reviews from "../components/Reviews";
 import {Content} from "antd/es/layout/layout";
 
 const BookPage: React.FC = observer(() => {
@@ -80,12 +81,7 @@ const BookPage: React.FC = observer(() => {
             </div>
             <div className="review-container">
                 <h1 className="book-title">Reviews</h1>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
-                <div style={{width: "350px", height: "200px", backgroundColor: "yellow"}}></div>
+                <Reviews />
             </div>
         </StyledBookPage>
     );
@@ -218,7 +214,7 @@ const StyledBookPage = styled.div`
         width: 130px;
         border-radius: 10px;
         align-self: center;
-    }
+    
     
     @media (max-width: 576px) {
         .book-container {

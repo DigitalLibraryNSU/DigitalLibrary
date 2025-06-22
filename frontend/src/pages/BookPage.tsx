@@ -214,7 +214,7 @@ const StyledBookPage = styled.div`
         width: 130px;
         border-radius: 10px;
         align-self: center;
-    }
+    
     
     @media (max-width: 576px) {
         .book-container {

@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../Store/StoreContext";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import bookReviewsStore from "../Store/ReviewsStore.ts";
+import { authStore } from "../Store/tokenStore";
 
-interface Review {
-  title: string;
-  body: string;
-  rate: number;
-  username: string;
-}
+const StarIcon = styled.span<{ filled: boolean }>`
+  color: ${props => props.filled ? '#ff9900' : '#ddd'};
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #ff9900;
+  }
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+`;
 
 const ReviewsContainer = styled.div`
   margin-top: 20px;
@@ -38,103 +49,202 @@ const ReviewItem = styled.div`
     color: #555;
   }
 
-  .review-rating {
+  .review-meta {
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
+    font-size: 13px;
+    color: #777;
+  }
+
+  .review-rating {
     font-weight: bold;
     color: #ff9900;
   }
 `;
 
+const ReviewForm = styled.form`
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 8px;
+
+  h3 {
+    margin-top: 0;
+    font-family: 'RuslanDisplay', sans-serif;
+    font-size: 20px;
+  }
+
+  input, textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    border: 2px solid #323232;
+    border-radius: 10px;
+    font-family: 'RuslanDisplay', sans-serif;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  button {
+    padding: 10px;
+    width: 100%;
+    font-family: 'Broadleaf', sans-serif;
+    font-size: 17px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #333;
+    }
+
+    &:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+  }
+`;
+
 const Reviews: React.FC = observer(() => {
   const { bookId } = useParams<{ bookId: string }>();
-  const { authStore } = useStore();
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(`/reviews/${bookId}/`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
-        }
-        const data = await response.json();
-        setReviews(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
+    if (bookId) {
+      bookReviewsStore.fetchBookReviews(parseInt(bookId));
+    }
+    return () => {
+      bookReviewsStore.clearReviews();
     };
-
-    fetchReviews();
   }, [bookId]);
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    if (!bookId || rating === 0) return;
+
     try {
-      const response = await fetch("/reviews/create/", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error("Failed to submit review");
-      }
-      const newReview = await response.json();
-      setReviews((prev) => [...prev, newReview]);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
+      await bookReviewsStore.createReview(
+          parseInt(bookId),
+          text,
+          rating,
+          title
+      );
+      setTitle("");
+      setText("");
+      setRating(0);
+    } catch (error) {
+      console.error("Failed to submit review:", error);
     }
+    bookReviewsStore.fetchBookReviews(parseInt(bookId));
   };
 
-  if (loading) return <p>Loading reviews...</p>;
-  if (error) return <p>{error}</p>;
+  if (bookReviewsStore.isLoading) return <div key="loading" className="loading">Загрузка...</div>;
+  if (bookReviewsStore.error) return <div key="error" className="error">{bookReviewsStore.error}</div>;
 
   return (
-    <ReviewsContainer>
-      <h2>Reviews</h2>
-      {reviews.length === 0 ? (
-        <p>No reviews available</p>
-      ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {reviews.map((review, index) => (
-            <ReviewItem key={index}>
-              <h3>{review.title}</h3>
-              <p>{review.body}</p>
-              <p className="review-rating">Rating: {review.rate}</p>
-              <p>By: {review.username}</p>
-            </ReviewItem>
-          ))}
-        </ul>
-      )}
-      {authStore.isAuthenticated ? (
-        <form onSubmit={handleSubmitReview}>
-          <h3>Leave a Review</h3>
-          <input type="text" name="title" placeholder="Title" required />
-          <textarea name="body" placeholder="Your review" required />
-          <input type="number" name="rate" min="0" max="5" placeholder="Rating (0-5)" required />
-          <input type="hidden" name="book" value={bookId} />
-          <button type="submit">Submit</button>
-        </form>
-      ) : (
-        <p>
-          Please <a href="/login">log in</a> to leave a review.
-        </p>
-      )}
-    </ReviewsContainer>
+      <ReviewsContainer key="reviews-container">
+        <h2 key="reviews-title">Отзывы</h2>
+
+        {bookReviewsStore.reviews.length === 0 ? (
+            <p key="no-reviews-text">Пока на эту книгу отзывов нет, но Вы можете стать первым</p>
+        ) : (
+            <div key="reviews-list">
+              {bookReviewsStore.reviews.map((review) => (
+                  <ReviewItem key={review.username}>
+                    <h3>{review.title}</h3>
+                    <p >{review.body}</p>
+                    <div className="review-meta">
+                      <span className="review-rating">
+                        {[...Array(5)].map((_, i) => (
+                          <span>
+                            {i < review.rate ? '★' : '☆'}
+                          </span>
+                        ))}
+                      </span>
+                      <span>
+                        От {review.username}
+                      </span>
+                    </div>
+                  </ReviewItem>
+              ))}
+            </div>
+        )}
+
+        {authStore.isAuthenticated ? (
+            <ReviewForm key="review-form" onSubmit={handleSubmitReview}>
+              <h3 key="form-title">Написать отзыв</h3>
+
+              <div key="title-input-group" className="form-group">
+                <input
+                    key="title-input"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Заголовок отзыва"
+                    required
+                />
+              </div>
+
+              <div key="text-input-group" className="form-group">
+            <textarea
+                key="text-input"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Ваш отзыв о книге..."
+                required
+            />
+              </div>
+
+              <div key="rating-input-group" className="form-group">
+                <StarRating key="star-rating">
+                  {[...Array(5)].map((_, i) => {
+                    const ratingValue = i + 1;
+                    return (
+                        <StarIcon
+                            key={`star-${i}`}
+                            filled={ratingValue <= (hoverRating || rating)}
+                            onClick={() => setRating(ratingValue)}
+                            onMouseEnter={() => setHoverRating(ratingValue)}
+                            onMouseLeave={() => setHoverRating(0)}
+                        >
+                          {ratingValue <= (hoverRating || rating) ? '★' : '☆'}
+                        </StarIcon>
+                    );
+                  })}
+                </StarRating>
+                <div key="rating-text" style={{ color: '#777', fontSize: '14px' }}>
+                  {rating > 0 ? `Вы выбрали: ${rating} ${rating === 1 ? 'звезда' : rating < 5 ? 'звезды' : 'звёзд'}` : 'Выберите оценку'}
+                </div>
+              </div>
+
+              <button
+                  key="submit-button"
+                  type="submit"
+                  disabled={bookReviewsStore.isLoading || rating === 0}
+              >
+                {bookReviewsStore.isLoading ? 'Отправка...' : 'Опубликовать отзыв'}
+              </button>
+            </ReviewForm>
+        ) : (
+            <p key="login-prompt">
+              <a href="/authorization" style={{color: '#323232', textDecoration: 'underline'}}>
+                Войдите
+              </a>, чтобы оставить отзыв
+            </p>
+        )}
+      </ReviewsContainer>
   );
 });
 

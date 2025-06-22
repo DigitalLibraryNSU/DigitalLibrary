@@ -2,7 +2,7 @@
     padding: 20px;
     background-color: white;
     border-radius: 10px;
-    text-align: center
+    text-align: center;
 }
 
 .find-card {
@@ -11,7 +11,7 @@
     align-items: center;
     background-color: white;
     border-radius: 10px;
-    border: 1px solid #323232
+    border: 1px solid #323232;
 }
 
 .find-card__header {
@@ -26,6 +26,7 @@
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
+    gap: 2px;
 }
 
 .find-card__button {
@@ -35,7 +36,22 @@
     border: 2px solid #323232;
     padding: 10px;
     width: 200px;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+}
+
+.find-card__button.error {
+    border-color: #ff0000;
+    margin-bottom: 0;
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    padding: 0;
+    width: 100%;
+    text-align: center; /* Выравнивание по центру */
+    font-family: Arial, sans-serif;
 }
 
 .find-card__open {
@@ -57,7 +73,18 @@
     border-radius: 10px;
     padding: 10px;
     width: 200px;
-    margin-bottom: 10px;
+    margin-top: 5px;
     background-color: black;
     color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.non-field-error {
+    color: #ff0000;
+    font-size: 12px;
+    margin: 5px 0;
+    text-align: center; /* Выравнивание по центру */
+    font-family: Arial, sans-serif;
+    width: 100%;
 }

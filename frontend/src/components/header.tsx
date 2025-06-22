@@ -1,4 +1,4 @@
-import "../styles/header.css"
+import "../styles/header.css";
 import  {useState} from "react";
 import HeaderButton from "./headerButton.tsx";
 import { TiThMenu } from "react-icons/ti";
@@ -20,8 +20,11 @@ export const Header = () => {
                         <HeaderButton name="поиск"/>
                     </li>
                     {authStore.isAuthenticated ? (
-                        < li className = "header_nav-item" onClick={() => navigate("/smart_search")}>
-                        <HeaderButton name="Профиль"/>
+                        <li className="header_nav-item profile-dropdown">
+                            <HeaderButton name="Профиль" />
+                            <ul className="dropdown-menu">
+                                <li onClick={() => navigate("/recommendations")}>Персональные рекомендации</li>
+                            </ul>
                         </li>
                         ) : (
                         <li className="header_nav-item" onClick={() => (navigate("/authorization"))}>

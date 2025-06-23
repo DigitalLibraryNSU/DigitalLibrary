@@ -9,6 +9,7 @@ interface Review {
     rate: number;
     username: string;
     book: string;
+    book_title: string;
 }
 
 class BookReviewsStore {
@@ -113,6 +114,7 @@ class BookReviewsStore {
                 rate: review.rate,
                 username: review.username,
                 book: review.book,
+                book_title: review.book_title,
             }));
         } catch (err) {
             this.error = 'Не удалось загрузить отзывы';

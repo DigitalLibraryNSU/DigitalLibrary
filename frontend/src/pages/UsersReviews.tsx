@@ -92,6 +92,9 @@ const RatingContainer = styled.div`
   margin-top: 20px;
   padding-top: 15px;
   border-top: 1px dashed #E0C9A6;
+    p {
+        font-family: 'Broadleaf', sans-serif;
+    }
 `;
 
 const Stars = styled.div`
@@ -188,6 +191,7 @@ const MyReviewsPage = observer(() => {
                                     <Stars>
                                         {'★'.repeat(review.rate)}{'☆'.repeat(5 - review.rate)}
                                     </Stars>
+                                    <p>{review.book_title}</p>
                                 </RatingContainer>
                             </ReviewCard>
                         ))}

@@ -36,7 +36,7 @@ const RecommendationsPage: React.FC = observer(() => {
         )
     }
 
-    if (booksStore.error || collectionsStore.collections.length == 0) {
+    if (booksStore.error) {
         return (
             <Layout style={{minHeight: "100vh", padding: "48px", backgroundColor: "#FFF9F0"}}>
                 <Header/>
@@ -52,13 +52,13 @@ const RecommendationsPage: React.FC = observer(() => {
     return (
         <Layout style={{minHeight: "100vh",  backgroundColor: "#FFF9F0"}}>
             <Header/>
-                <Content style={{ padding: "0 48px", marginTop: "90px" }}>
-                <div style={{ minHeight: 280, padding: 24, borderRadius: 10 }}>
+            <Content style={{padding: "0 48px", marginTop: "90px"}}>
+                <div style={{minHeight: 280, padding: 24, borderRadius: 10}}>
                     <BookList books={booksStore.books}/>
                 </div>
             </Content>
         </Layout>
-)
+    )
 })
 
 export default RecommendationsPage

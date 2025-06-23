@@ -37,7 +37,7 @@ const BooksPage: React.FC = observer(() => {
                 <div style={{ minHeight: 280, padding: 24, borderRadius: 10 }}>
                     <BookList books={booksStore.books}/>
                 </div>
-            </Content>x
+            </Content>
         </Layout>
     )
 }

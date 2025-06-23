@@ -1,120 +1,88 @@
+/* Основной контейнер */
 .book-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: black solid 1px;
-    margin: 10px;
+    width: 250px;
+    margin: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: transparent;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Контейнер обложки с эффектом */
+.book-card__cover-wrapper {
+    position: relative;
     width: 100%;
-    max-width: 250px; /* Ограничение максимальной ширины */
-    height: auto; /* Высота адаптируется к контенту */
-    background: white;
-    padding: 0.7em;
-    border-radius: 6px;
-    text-align: center;
-    box-sizing: border-box; /* Учитываем padding в ширине */
+    height: 300px;
+    overflow: hidden;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
 }
 
-.book-card__image {
-    background-color: rgb(236, 236, 236);
-    height: 170px;
-    border-radius: 6px;
-    margin-bottom: 10px;
+/* Сама обложка книги */
+.book-card__cover {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    width: 100%; /* Заполняет ширину карточки */
+    transition: all 0.5s ease;
 }
 
-.book-card__author {
-    text-transform: uppercase;
-    font-size: 0.7em;
-    font-weight: 600;
-    color: rgb(6, 10, 16);
-    padding: 10px 7px 0;
+/* Угловой элемент в русском стиле */
+.book-card__corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent #A52A2A transparent transparent;
+    transition: all 0.3s ease;
+}
+
+/* Блок с информацией */
+.book-card__details {
+    padding: 15px 5px;
+    text-align: center;
 }
 
 .book-card__title {
-    font-weight: 600;
-    color: rgb(2, 1, 1);
-    padding: 7px;
+    font-family: 'Noto Serif', serif;
+    color: #3A3226;
     font-size: 16px;
+    margin: 5px 0;
+    font-weight: 700;
 }
 
-.book-card__description {
-    color: gray;
-    font-weight: 400;
-    font-size: 11px;
-    padding-top: 20px;
+.book-card__author {
+    font-family: 'PT Sans', sans-serif;
+    color: #5A3E36;
+    font-size: 13px;
+    font-style: italic;
 }
 
-/* Адаптивность для планшетов и телефонов */
-@media (max-width: 1024px) { /* Для планшетов */
+/* Эффекты при наведении */
+.book-card:hover .book-card__cover-wrapper {
+    transform: perspective(1000px) rotateX(10deg);
+    box-shadow: 10px 15px 25px rgba(0, 0, 0, 0.3);
+}
+
+.book-card:hover .book-card__cover {
+    transform: scale(1.05);
+}
+
+.book-card:hover .book-card__corner {
+    border-width: 0 50px 50px 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
     .book-card {
-        max-width: 200px; /* Уменьшаем ширину */
-        padding: 0.6em;
+        width: 160px;
     }
-
-    .book-card__image {
-        height: 150px;
-    }
-
-    .book-card__author {
-        font-size: 0.65em;
-    }
-
-    .book-card__title {
-        font-size: 14px;
-    }
-
-    .book-card__description {
-        font-size: 10px;
-        padding-top: 15px;
-    }
-}
-
-@media (max-width: 760px) { /* Для телефонов */
-    .book-card {
-        max-width: 180px;
-        padding: 0.5em;
-    }
-
-    .book-card__image {
-        height: 130px;
-    }
-
-    .book-card__author {
-        font-size: 0.6em;
-    }
-
-    .book-card__title {
-        font-size: 12px;
-    }
-
-    .book-card__description {
-        font-size: 9px;
-        padding-top: 10px;
-    }
-}
-
-@media (max-width: 480px) { /* Для небольших телефонов */
-    .book-card {
-        max-width: 100%; /* Заполняет ширину экрана */
-        padding: 0.5em;
-    }
-
-    .book-card__image {
-        height: 120px;
-    }
-
-    .book-card__author {
-        font-size: 0.55em;
-    }
-
-    .book-card__title {
-        font-size: 11px;
-    }
-
-    .book-card__description {
-        font-size: 8px;
-        padding-top: 8px;
+    .book-card__cover-wrapper {
+        height: 240px;
     }
 }

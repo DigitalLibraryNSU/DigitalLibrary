@@ -22,7 +22,7 @@ const CollectionsPage: React.FC = observer(() => {
     }, [collectionsStore]);
 
     if (collectionsStore.isLoading) return (
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Loader/>
@@ -30,7 +30,7 @@ const CollectionsPage: React.FC = observer(() => {
         </Layout>
     );
     if (collectionsStore.error || collectionsStore.collections.length == 0) return(
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
                 <p>Мы не можем найти коллекции, попробуйте ещё раз</p>
@@ -39,7 +39,7 @@ const CollectionsPage: React.FC = observer(() => {
     );
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout style={{ minHeight: "100vh", backgroundColor: "#FFF9F0" }}>
             <Header />
                 <div
                     style={{

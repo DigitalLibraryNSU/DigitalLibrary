@@ -1,85 +1,82 @@
 .black-card {
-    width: 100%; /* Автоматическая ширина */
-    max-width: 400px; /* Ограничение максимальной ширины */
-    min-width: 350px;
-    height: 250px; /* Высота будет зависеть от контента */
-    margin: 10px;
-    background-color: #232323;
-    transition: all 0.2s;
-    border-radius: 10px;
+    width: 280px;
+    height: 380px;
+    margin: 15px;
+    background: #1A1A1A;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box; /* Учитываем отступы в размерах */
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+}
+
+.black-card__content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px; /* Отступ от красной полоски */
 }
 
 .black-card__title {
-    font-family: RuslanDisplay;
-    color: #ededed;
-    font-size: 27px;
-    font-weight: bold;
+    font-family: "RuslanDisplay", sans-serif;
+    color: #D4AF37;
+    font-size: 24px;
+    margin-bottom: 15px;
     text-align: center;
-    margin-bottom: 10px; /* Отступ между заголовком и описанием */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .black-card__description {
-    color: #dad9d9;
-    font-weight: lighter;
+    font-family: "PT Sans", sans-serif;
+    color: #C0C0C0;
+    font-size: 14px;
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.4s ease;
     text-align: center;
-    font-family: Broadleaf;
-    font-size: 15px;
+    line-height: 1.5;
 }
 
+.black-card__border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: #A52A2A;
+    transition: all 0.3s ease;
+}
+
+/* Эффекты при наведении */
 .black-card:hover {
-    transform: scale(0.98);
-    border-radius: 20px;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
 }
 
-/* Адаптивность для планшетов и телефонов */
-@media (max-width: 1024px) { /* Для планшетов */
-    .black-card {
-        max-width: 350px;
-        margin: 10px auto; /* Центрирование карточек */
-    }
-
-    .black-card__title {
-        font-size: 22px;
-    }
-
-    .black-card__description {
-        font-size: 14px;
-    }
+.black-card:hover .black-card__border {
+    width: 8px;
 }
 
-@media (max-width: 760px) { /* Для телефонов */
-    .black-card {
-        max-width: 280px;
-        padding: 15px;
-        margin: 10px auto;
-    }
-
-    .black-card__title {
-        font-size: 18px;
-    }
-
-    .black-card__description {
-        font-size: 13px;
-    }
+.black-card:hover .black-card__description {
+    opacity: 1;
+    max-height: 200px;
+    margin-top: 10px;
 }
 
-@media (max-width: 480px) { /* Для небольших телефонов */
+/* Адаптивность */
+@media (max-width: 768px) {
     .black-card {
-        max-width: 100%; /* Заполняет ширину экрана */
-        margin: 5px auto;
+        width: 240px;
+        height: 340px;
     }
-
     .black-card__title {
-        font-size: 16px;
-    }
-
-    .black-card__description {
-        font-size: 12px;
+        font-size: 20px;
     }
 }

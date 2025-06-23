@@ -38,7 +38,7 @@ const RecommendationsPage: React.FC = observer(() => {
 
     if (booksStore.error || collectionsStore.collections.length == 0) {
         return (
-            <Layout style={{minHeight: "100vh", padding: "48px"}}>
+            <Layout style={{minHeight: "100vh", padding: "48px", backgroundColor: "#FFF9F0"}}>
                 <Header/>
                     <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "10px", border: "1px solid black", backgroundColor: "white", textAlign: "center" }}>
                         <p>Почему-то мы не смогли найти рекомендации для вас. Возможно, вы ещё не оставили отзывов на книги и мы не знаем
@@ -50,7 +50,7 @@ const RecommendationsPage: React.FC = observer(() => {
 
 
     return (
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh",  backgroundColor: "#FFF9F0"}}>
             <Header/>
                 <Content style={{ padding: "0 48px", marginTop: "90px" }}>
                 <div style={{ minHeight: 280, padding: 24, borderRadius: 10 }}>

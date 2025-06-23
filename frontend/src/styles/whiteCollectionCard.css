@@ -1,86 +1,80 @@
 .white-card {
-    width: 100%; /* Автоматическая ширина */
-    max-width: 400px; /* Ограничение максимальной ширины */
-    min-width: 350px;
-    height: 250px; /* Высота будет зависеть от контента */
-    margin: 10px;
-    background-color: white;
-    border: black solid 1px;
-    transition: all 0.2s;
+    width: 280px;
+    height: 380px;
+    margin: 15px;
+    background: #ffa300;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
     display: flex;
-    border-radius: 10px;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box; /* Учитываем padding в размерах */
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+    border-radius: 8px;
+}
+
+.white-card__content {
+    padding: 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .white-card__title {
-    font-family: RuslanDisplay;
-    color: #000000;
-    font-size: 27px;
-    font-weight: bold;
+    font-family: "RuslanDisplay", sans-serif;
+    color: #A52A2A;
+    font-size: 24px;
+    margin-bottom: 15px;
     text-align: center;
-    margin-bottom: 10px; /* Отступ между заголовком и описанием */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .white-card__description {
-    color: #1a1a1a;
-    font-weight: lighter;
+    font-family: "PT Sans", sans-serif;
+    color: #5A3E36;
+    font-size: 14px;
+    opacity: 0;
+    max-height: 0;
+    transition: all 0.4s ease;
     text-align: center;
-    font-family: Broadleaf;
-    font-size: 15px;
 }
 
+.white-card__border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: #A52A2A;
+    transition: all 0.3s ease;
+}
+
+/* Эффекты */
 .white-card:hover {
-    transform: scale(0.98);
-    border-radius: 20px;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(139, 69, 19, 0.15);
 }
 
-/* Адаптивность для планшетов и телефонов */
-@media (max-width: 1024px) { /* Для планшетов */
-    .white-card {
-        max-width: 350px;
-        margin: 10px auto; /* Центрирование карточек */
-    }
-
-    .white-card__title {
-        font-size: 22px;
-    }
-
-    .white-card__description {
-        font-size: 14px;
-    }
+.white-card:hover .white-card__border {
+    width: 8px;
 }
 
-@media (max-width: 760px) { /* Для телефонов */
-    .white-card {
-        max-width: 280px;
-        padding: 15px;
-        margin: 10px auto;
-    }
-
-    .white-card__title {
-        font-size: 18px;
-    }
-
-    .white-card__description {
-        font-size: 13px;
-    }
+.white-card:hover .white-card__description {
+    opacity: 1;
+    max-height: 200px;
+    margin-top: 10px;
 }
 
-@media (max-width: 480px) { /* Для небольших телефонов */
+
+@media (max-width: 768px) {
     .white-card {
-        max-width: 100%; /* Заполняет ширину экрана */
-        margin: 5px auto;
+        width: 240px;
+        height: 340px;
     }
-
     .white-card__title {
-        font-size: 16px;
-    }
-
-    .white-card__description {
-        font-size: 12px;
+        font-size: 20px;
     }
 }

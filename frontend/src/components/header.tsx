@@ -12,7 +12,7 @@ export const Header = () => {
 
     return (
         <header className="header">
-            <span className="header_logo" onClick={() => navigate("/")}>Жили-Были Library</span>
+            <span onClick={() => navigate("/")}><span className="header_logo">Жили-Были</span><h1 className="small-text">library</h1></span>
             <nav className={`header_nav ${isOpen ? "active" : ""}`}>
                 <ul className="header_nav-list">
                     <li className="header_nav-item" onClick={() => navigate("/collections")}>

@@ -155,7 +155,6 @@ const Reviews: React.FC = observer(() => {
 
   return (
       <ReviewsContainer key="reviews-container">
-        <h2 key="reviews-title">Отзывы</h2>
 
         {bookReviewsStore.reviews.length === 0 ? (
             <p key="no-reviews-text">Пока на эту книгу отзывов нет, но Вы можете стать первым</p>

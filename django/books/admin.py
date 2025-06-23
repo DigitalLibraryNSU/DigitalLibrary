@@ -176,7 +176,6 @@ class BookAdmin(admin.ModelAdmin):
                 collection.books.add(obj)
 
         should_recalculate = False
-        reason = ""
 
         if not change:
             should_recalculate = True

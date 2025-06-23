@@ -164,3 +164,80 @@ def get_book_recommendations_for_user(user_id, limit=10):
                 ", ".join([f"{book.title} (ID: {book.id})" for book in recommended_books]))
 
     return recommended_books
+
+
+def getCollectionSuggestionsForBook(book_id, similarity_threshold=0.91, max_suggestions=5):
+    """
+    Находит подходящие коллекции для книги на основе семантического сходства
+    """
+    from elasticsearch import Elasticsearch
+    from books.models import Collection, Book
+    from books.collectionEmbeddingUtils import get_collection_embedding_by_book_ids
+    import numpy as np
+
+    try:
+        client = Elasticsearch(ELASTIC_URL)
+        resp = client.get(index="books", id=book_id)
+
+        if '_source' not in resp or 'embedding' not in resp['_source']:
+            return Collection.objects.none(), []
+
+        book_embedding = np.array(resp['_source']['embedding'], dtype=np.float32)
+
+        book = Book.objects.get(id=book_id)
+        all_collections = Collection.objects.exclude(books=book)
+
+        collection_similarities = []
+
+        for collection in all_collections:
+            book_ids = [str(book.id) for book in collection.books.all()]
+
+            if not book_ids:
+                continue
+
+            try:
+                collection_embedding = get_collection_embedding_by_book_ids(book_ids, client)
+
+                # Убеждаемся, что все вычисления в float64 для точности
+                book_emb = book_embedding.astype(np.float64)
+                coll_emb = collection_embedding.astype(np.float64)
+
+                # Вычисляем косинусное сходство
+                similarity = np.dot(book_emb, coll_emb) / (
+                        np.linalg.norm(book_emb) * np.linalg.norm(coll_emb)
+                )
+
+                # Преобразуем в float для корректного сравнения
+                similarity_float = float(similarity)
+
+                # Добавляем только если сходство выше порога
+                if similarity_float >= similarity_threshold:
+                    collection_similarities.append((collection.id, similarity_float))
+                    print(f"Added collection '{collection.title}' with similarity {similarity_float:.1%}", flush=True)
+                else:
+                    print(
+                        f"Skipped collection '{collection.title}' - below threshold ({similarity_float:.1%} < {similarity_threshold:.1%})",
+                        flush=True)
+
+            except Exception as e:
+                print(f"Error processing collection {collection.id}: {e}", flush=True)
+                continue
+
+        # Сортируем по убыванию сходства и берем максимум max_suggestions
+        collection_similarities.sort(key=lambda x: x[1], reverse=True)
+        suggested_collection_ids = [cid for cid, _ in collection_similarities[:max_suggestions]]
+        similarity_percentages = [round(sim * 100, 1) for _, sim in collection_similarities[:max_suggestions]]
+
+        if not suggested_collection_ids:
+            return Collection.objects.none(), []
+
+        order = Case(*[When(id=collection_id, then=pos)
+                       for pos, collection_id in enumerate(suggested_collection_ids)])
+
+        collections = Collection.objects.filter(id__in=suggested_collection_ids).order_by(order)
+
+        return collections, similarity_percentages
+
+    except Exception as e:
+        print(f"Error finding collection suggestions for book {book_id}: {e}", flush=True)
+        return Collection.objects.none(), []

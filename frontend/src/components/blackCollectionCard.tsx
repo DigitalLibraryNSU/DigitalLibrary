@@ -1,22 +1,28 @@
-import {FC, useCallback} from "react";
-import {useNavigate} from "react-router-dom";
-import "../styles/blackCollectionCard.css"
+import { FC, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/blackCollectionCard.css";
 
 type CardProps = {
     title: string;
     description: string;
-    collectionId: string
+    collectionId: string;
 };
 
-const BlackCollectionCard: FC<CardProps> = ({ title, description, collectionId }) => {
+const blackCollectionCard: FC<CardProps> = ({ title, description, collectionId }) => {
     const navigate = useNavigate();
-    const handleClick = useCallback(() => {navigate(`/collections/${collectionId}`)}, [collectionId]);
+    const handleClick = useCallback(() => {
+        navigate(`/collections/${collectionId}`);
+    }, [collectionId]);
+
     return (
         <div className="black-card" onClick={handleClick}>
-            <span className="black-card__title">{title.toUpperCase()}</span>
-            <span className="black-card__description">{description}</span>
+            <div className="black-card__border"></div>
+            <div className="black-card__content">
+                <span className="black-card__title">{title.toUpperCase()}</span>
+                <span className="black-card__description">{description}</span>
+            </div>
         </div>
     );
 };
 
-export default BlackCollectionCard;
+export default blackCollectionCard;

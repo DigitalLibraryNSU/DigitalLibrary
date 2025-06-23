@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/bookCard.css"
-import {useCallback} from "react";
+import "../styles/bookCard.css";
+import { useCallback } from "react";
 
 interface BookCardProps {
     name: string;
@@ -12,20 +12,20 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ name, description, author, bookId, img }) => {
     const navigate = useNavigate();
-    const handleClick = useCallback(() => {navigate(`/books/${bookId}`)}, []);
+    const handleClick = useCallback(() => { navigate(`/books/${bookId}`) }, [bookId]);
 
     return (
-            <button className="book-card" onClick={handleClick}>
-                <img className="book-card__image" src={img} alt="book cover" />
-                <div className="book-card__author"> {author} </div>
-                <div className="book-card__title">{name}</div>
-                    <div className="book-card__description">
-                        <span className="name">{description}</span>
-                    </div>
-
-            </button>
+        <div className="book-card" onClick={handleClick}>
+            <div className="book-card__cover-wrapper">
+                <img className="book-card__cover" src={img} alt="Обложка книги" />
+                <div className="book-card__corner"></div>
+            </div>
+            <div className="book-card__details">
+                <h3 className="book-card__title">{name}</h3>
+                <p className="book-card__author">{author}</p>
+            </div>
+        </div>
     );
 };
-
 
 export default BookCard;

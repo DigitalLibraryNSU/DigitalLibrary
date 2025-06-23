@@ -40,9 +40,9 @@ const BookPage: React.FC = observer(() => {
 
     if (bookStore.isLoading) {
         return (
-            <Layout style={{minHeight: "100vh"}}>
+            <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
                 <Header/>
-                <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF9F0" }}>
                     <Loader/>
                 </Content>
             </Layout>
@@ -51,12 +51,12 @@ const BookPage: React.FC = observer(() => {
 
     if (bookStore.error || !bookStore.book) {
         return(
-        <Layout style={{minHeight: "100vh"}}>
-            <Header/>
-            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
-                <h1>Книжку съела собака, но вы можете попробовать открыть её ещё раз, может поможет</h1>
-            </Content>
-        </Layout>);
+            <Layout style={{minHeight: "100vh"}}>
+                <Header/>
+                <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF9F0"  }}>
+                    <h1>Книжку съела собака, но вы можете попробовать открыть её ещё раз, может поможет</h1>
+                </Content>
+            </Layout>);
     }
 
     return (
@@ -74,155 +74,141 @@ const BookPage: React.FC = observer(() => {
                         <h3 className="book-author">By {bookStore.book.author}</h3>
                         <p className="book-description">{bookStore.book.description}</p>
                         <button className="book-download" onClick={downloadFile}>
-                        Download book
+                            Download book
                         </button>
                     </div>
                 </div>
             </div>
             <div className="review-container">
-                <h1 className="book-title">Reviews</h1>
+                <h1 className="reviews-title">Отзывы</h1>
                 <Reviews />
             </div>
         </StyledBookPage>
     );
 });
 
-
 const StyledBookPage = styled.div`
-    font-family: Broadleaf;
-    padding: 20px;
+    min-height: 100vh;
+    background-color: #FFF9F0;
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: #f5f5f5;
-    gap: 30px;
+    gap: 40px;
 
     .book-container-all {
         display: flex;
-        flex-direction: row;
-        gap: 30px
-    }
+        gap: 40px;
+        margin-top: 80px;
 
-    .small {
-        flex: 1;
-    }
-
-    .big {
-        flex: 3;
-    }
-    .review-container {
-        display: flex;
-        flex-direction: column;
-        background: white;
-        padding: 40px;
-        border-radius: 10px;
-        border: black solid 1px;
-        min-height: 70vh;
-        width: 100%;
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
     }
 
     .book-container {
-        margin-top: 80px;
-        display: flex;
-        flex-direction: row;
         background: white;
-        padding: 50px;
-        border-radius: 10px;
-        border: black solid 1px;
-        min-height: 70vh;
-        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+
+        &.small {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &.big {
+            flex: 2;
+        }
     }
 
     .book-image {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 20px;
-    }
+        width: 100%;
+        max-width: 300px;
 
-    .book-image img {
-        max-width: 100%;
-        height: auto;
-        //border-radius: 10px;
-        //box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
     }
 
     .book-details {
-        font-family: Broadleaf;
-        flex: 2;
         display: flex;
         flex-direction: column;
+        height: 100%;
     }
 
     .book-title {
-        font-family: Newake;
-        font-size: 32px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #333;
+        font-family: 'RuslanDisplay', sans-serif;
+        font-size: 42px;
+        font-weight: 700;
+        color: #3A3226;
+        margin-bottom: 12px;
+        line-height: 1.2;
     }
 
     .book-author {
-        font-family: Broadleaf;
-        font-size: 20px;
-        font-weight: normal;
-        margin-bottom: 20px;
-        color: #777;
+        font-family: 'PT Sans', sans-serif;
+        font-size: 18px;
+        color: #5A3E36;
+        margin-bottom: 24px;
+        font-style: italic;
     }
 
     .book-description {
-        font-family: Broadleaf;
+        font-family: 'PT Sans', sans-serif;
         font-size: 16px;
         line-height: 1.6;
-        color: #555;
-    }
-
-    /* Адаптивность для планшетов */
-    @media (max-width: 768px) {
-        .book-container {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .book-image {
-            margin-bottom: 20px;
-            margin-right: 0;
-        }
-
-        .book-title {
-            font-size: 28px;
-            text-align: center;
-        }
-
-        .book-author {
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .book-description {
-            font-size: 15px;
-            text-align: center;
-        }
+        color: #5A3E36;
+        margin-bottom: 32px;
     }
 
     .book-download {
-        margin-top: 40px;
+        background: #A52A2A;
         color: white;
-        background: black;
-        height: 40px;
-        width: 130px;
-        border-radius: 10px;
-        align-self: center;
-    
-    
-    @media (max-width: 576px) {
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-family: 'PT Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        align-self: flex-start;
+        margin-top: auto;
+
+        &:hover {
+            background: #8B0000;
+            transform: translateY(-2px);
+        }
+    }
+
+    .review-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+    }
+
+    .reviews-title {
+        font-size: 28px;
+        color: #3A3226;
+        margin-bottom: 24px;
+        font-family: 'RuslanDisplay', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px;
+
         .book-container {
-            padding: 15px;
+            padding: 24px;
         }
 
         .book-title {
-            font-size: 24px;
+            font-size: 26px;
         }
 
         .book-author {
@@ -230,16 +216,23 @@ const StyledBookPage = styled.div`
         }
 
         .book-description {
-            font-size: 14px;
+            font-size: 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .book-container {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 22px;
+        }
+
+        .book-download {
+            width: 100%;
         }
     }
 `;
 
 export default BookPage;
-
-
-
-
-
-
-

@@ -13,6 +13,9 @@ interface Book {
     documentName: string;
     documentMime: string;
     documentUrl: string;
+    average_rating: number;
+    reviews_count: number;
+    score: number;
 }
 
 
@@ -42,6 +45,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress +`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -66,6 +72,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress+`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
             console.log("Processed books:", this.books);
         } catch (error: any) {
@@ -90,6 +99,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress+`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
         } catch (error: any) {
             this.error = error.message;
@@ -112,6 +124,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress+`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
         } catch (error: any) {
             this.error = error.message;
@@ -135,6 +150,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress+`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
         } catch (error: any) {
             this.error = error.message;
@@ -166,6 +184,9 @@ class BooksStore {
                 description: book.description.slice(0, 200)+"..." || '',
                 author: book.author || '',
                 image: book.image ? this.apiAddress+`${book.image}` : '',
+                average_rating: book.average_rating,
+                reviews_count: book.reviews_count,
+                score: book.score,
             }));
         } catch (error: any) {
             this.error = error.message;

@@ -1,27 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import "../styles/formToFindBook.css"
+import "../styles/authForm.css";
 import AuthStore from "../Store/AuthStore.ts";
-
 
 const FormToRegister = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [err, setErr] = useState("");
+    const [errors, setErrors] = useState({
+        username: "",
+        email: "",
+        password: "",
+        nonField: ""
+    });
+
     const navigate = useNavigate();
-    const [usernameError, setUsernameErr] = useState("");
-    const [emailError, setEmailErr] = useState("");
-    const [passwordError, setPasswordErr] = useState("");
-    const [nonFieldError, setNonFieldErr] = useState("");
 
     async function handleRegister(e: React.FormEvent) {
         e.preventDefault();
-        setErr("");
-        setUsernameErr("");
-        setEmailErr("");
-        setPasswordErr("");
-        setNonFieldErr("");
+        setErrors({ username: "", email: "", password: "", nonField: "" });
 
         try {
             const auth = new AuthStore(password, email, username);
@@ -29,68 +26,87 @@ const FormToRegister = () => {
 
             if (registerSuccess) {
                 const authSuccess = await auth.authenticate();
-
                 if (authSuccess) {
                     navigate("/");
                 } else {
-                    setNonFieldErr(auth.nonFieldError || "Ошибка авторизации после регистрации");
+                    setErrors({
+                        ...errors,
+                        nonField: "Ошибка авторизации после регистрации"
+                    });
                 }
             } else {
-                setUsernameErr(auth.usernameError);
-                setEmailErr(auth.emailError);
-                setPasswordErr(auth.passwordError);
-                setNonFieldErr(auth.nonFieldError);
+                setErrors({
+                    username: auth.usernameError || "",
+                    email: auth.emailError || "",
+                    password: auth.passwordError || "",
+                    nonField: auth.nonFieldError || ""
+                });
             }
         } catch (e: any) {
-            setErr(e.message || "Произошла неизвестная ошибка");
+            setErrors({
+                ...errors,
+                nonField: e.message || "Произошла неизвестная ошибка"
+            });
             console.error("Registration error:", e);
         }
     }
 
     return (
-        <div className="find-card">
-            <div className="find-card__start">
-                <form onSubmit={handleRegister}>
-                    <h3 className="find-card__header">Регистрация</h3>
-                    <div className="find-card__buttons">
+        <div className="auth-container">
+            <div className="auth-card">
+                <div className="auth-card__ornament-top"></div>
+
+                <form onSubmit={handleRegister} className="auth-form">
+                    <h2 className="auth-form__title">Создайте аккаунт</h2>
+
+                    <div className="auth-form__group">
                         <input
-                            className={`find-card__button ${usernameError ? 'error' : ''}`}
+                            className={`auth-form__input ${errors.username ? 'error' : ''}`}
                             placeholder="Имя пользователя"
                             type="text"
-                            required={true}
+                            required
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
-                        {usernameError && <p className="error-message">{usernameError}</p>}
+                        {errors.username && <span className="auth-form__error">{errors.username}</span>}
+                    </div>
 
+                    <div className="auth-form__group">
                         <input
-                            className={`find-card__button ${emailError ? 'error' : ''}`}
-                            placeholder="Почта"
+                            className={`auth-form__input ${errors.email ? 'error' : ''}`}
+                            placeholder="Электронная почта"
                             type="email"
-                            required={true}
+                            required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        {emailError && <p className="error-message">{emailError}</p>}
+                        {errors.email && <span className="auth-form__error">{errors.email}</span>}
+                    </div>
 
+                    <div className="auth-form__group">
                         <input
-                            className={`find-card__button ${passwordError ? 'error' : ''}`}
-                            required={true}
+                            className={`auth-form__input ${errors.password ? 'error' : ''}`}
                             placeholder="Пароль"
                             type="password"
+                            required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        {passwordError && <p className="error-message">{passwordError}</p>}
+                        {errors.password && <span className="auth-form__error">{errors.password}</span>}
                     </div>
 
-                    {nonFieldError && <p className="error-message">{nonFieldError}</p>}
-                    {err && <p className="error-message">{err}</p>}
+                    {errors.nonField && (
+                        <div className="auth-form__error-message">
+                            {errors.nonField}
+                        </div>
+                    )}
 
-                    <button className="find-card__find-button" type="submit">
+                    <button className="auth-form__submit" type="submit">
                         Зарегистрироваться
                     </button>
                 </form>
+
+                <div className="auth-card__ornament-bottom"></div>
             </div>
         </div>
     );

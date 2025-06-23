@@ -6,7 +6,7 @@ import FormToAuthorize from "../components/formToAuthorize.tsx";
 
 const AuthorizationPage = () => {
     return (
-        <Layout style={{minHeight: "100vh", padding: "100px", alignItems: "center", justifyContent: "center", display: "flex",}}>
+        <Layout style={{minHeight: "100vh", padding: "100px", alignItems: "center", justifyContent: "center", display: "flex", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content>
                 <FormToAuthorize/>

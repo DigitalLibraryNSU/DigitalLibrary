@@ -1,28 +1,43 @@
 .container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin: 100px;
+    align-items: center;
+    margin-top: 80px;
     gap: 20px;
-    flex-wrap: wrap;
+    border: #7f8c8d solid 1px;
+    padding: 90px;
+    background-color: #A52A2A;
 }
 
 .layout {
-    background-color: none;
+    background-color: #FFF9F0;
 }
 
 .texts {
-    max-width: 500px;
-    margin-left: 100px;
-    margin-top: 50px;
+    /*max-width: 500px;*/
+    /*margin-left: 100px;*/
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .title {
-    color: #000000;
+    color: #fffcf5;
     font-size: 65px;
     font-weight: bold;
     margin-bottom: 20px;
-    text-align: left;
+    text-align: center;
+    font-family: RuslanDisplay;
+}
+
+.title-bottom {
+    margin-top: 50px;
+    color: #FFD700;
+    font-size: 65px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
     font-family: RuslanDisplay;
 }
 
@@ -33,7 +48,7 @@
 }
 
 .arrow-right:hover {
-    color: #cf0000;
+    color: #d11212;
 }
 
 .bottom {
@@ -44,11 +59,12 @@
 
 .text {
     margin-top: 30px;
-    color: #000000;
-    font-size: 25px; /* Размер шрифта для текста */
+    color: #cfcac2;
+    font-size: 25px;
     line-height: 29px;
-    text-align: left; /* Выравнивание текста */
+    text-align: center;
     font-family: Broadleaf;
+
 }
 
 .text-bottom {
@@ -56,16 +72,16 @@
     color: #000000;
     font-size: 25px; /* Размер шрифта для текста */
     line-height: 29px;
-    font-weight: bold;
     text-align: left; /* Выравнивание текста */
     font-family: Broadleaf;
 }
 
 /* Стили для карточек */
 .cards {
+    margin: 20px;
     display: flex;
-    flex-direction: column;
-    gap: 20px; /*Отступ между карточками */
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /* Медиазапрос для мобильных устройств */

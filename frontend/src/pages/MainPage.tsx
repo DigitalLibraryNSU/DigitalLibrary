@@ -2,7 +2,6 @@ import { Header } from "../components/header.tsx";
 import { Layout } from "antd";
 import "../styles/MainPageStyles.css";
 import BlackCollectionCard from "../components/blackCollectionCard.tsx";
-import { ArrowRightOutlined } from '@ant-design/icons';
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useStore } from "../Store/StoreContext.tsx";
@@ -32,7 +31,7 @@ export const MainPage: React.FC = observer(() => {
     }, [collectionsStore.isLoading, collectionsStore.collections]);
 
     if (collectionsStore.isLoading) return (
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout style={{ minHeight: "100vh", backgroundColor: "#FFF9F0" }}>
             <Header />
             <div className="container">
                 <div className="texts">
@@ -46,7 +45,7 @@ export const MainPage: React.FC = observer(() => {
         </Layout>
     );
     if (collectionsStore.error || collectionsStore.collections.length === 0) return (
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout style={{ minHeight: "100vh", backgroundColor: "#FFF9F0" }}>
             <Header />
             <div className="container">
                 <div className="texts">
@@ -60,29 +59,29 @@ export const MainPage: React.FC = observer(() => {
     );
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
-            <Header />
+        <Layout style={{minHeight: "100vh"}}>
+            <Header/>
             <div className="container">
                 <div className="texts">
                     <span className="title">Жили-Были Library</span>
-                    <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и открывать новые литературные произведения.
+                    <div className="text">Наша онлайн библиотека помогает пользователям легко находить любимые книги и
+                        открывать новые литературные произведения.
                         С помощью удобного интерфейса вы можете искать книги по автору, названию, теме или отрывку.
-                        Откройте для себя мир книг с нашей библиотекой!</div>
-                    <div className="bottom">
-                        <div className="text-bottom">Возможно вам понравятся эти коллекции <ArrowRightOutlined className="arrow-right" /></div>
-
+                        Откройте для себя мир книг с нашей библиотекой!
                     </div>
                 </div>
-                <div className="cards">
-                    {randomCollections.map((collection: Collection) => (
-                            <BlackCollectionCard
-                                key={collection.id}
-                                title={collection.name}
-                                description={collection.description}
-                                collectionId={collection.documentId}
-                            />
-                    ))}
-                </div>
+
+            </div>
+            <span className="title-bottom">Наши подборки</span>
+            <div className="cards">
+                {randomCollections.map((collection: Collection) => (
+                    <BlackCollectionCard
+                        key={collection.id}
+                        title={collection.name}
+                        description={collection.description}
+                        collectionId={collection.documentId}
+                    />
+                ))}
             </div>
         </Layout>
     );

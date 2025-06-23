@@ -6,7 +6,7 @@ import {Content} from "antd/es/layout/layout";
 
 const AuthorizationPage = () => {
     return (
-        <Layout style={{minHeight: "100vh", padding: "100px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <Layout style={{minHeight: "100vh", padding: "100px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content>
                 <FormToRegister/>

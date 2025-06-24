@@ -12,7 +12,7 @@ const BooksPage: React.FC = observer(() => {
     const { booksStore } = useStore();
 
     if (booksStore.isLoading) return (
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Loader/>
@@ -21,9 +21,9 @@ const BooksPage: React.FC = observer(() => {
     );
 
     if (booksStore.error || booksStore.books.length == 0) return (
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
             <Header/>
-            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center"  }}>
+            <Content style={{ padding: "0 48px", marginTop: "90px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FFF9F0"  }}>
                 <p>Упс, мы не нашли книжки, попробуйте ещё раз</p>
             </Content>
         </Layout>
@@ -31,11 +31,11 @@ const BooksPage: React.FC = observer(() => {
 
 
     return (
-        <Layout style={{minHeight: "100vh"}}>
+        <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px" }}>
                 <div style={{ minHeight: 280, padding: 24, borderRadius: 10 }}>
-                    <BookList books={booksStore.books}/>
+                    <BookList books={booksStore.books} collectionTitle={"Результаты поиска"}/>
                 </div>
             </Content>
         </Layout>

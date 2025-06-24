@@ -14,10 +14,10 @@ const CollectionPage: React.FC = observer(() => {
     const { collectionId } = useParams<{ collectionId: any }>();
     const { booksStore } = useStore();
 
+
     useEffect(() => {
         booksStore.fetchBooksByCollection(collectionId);
-        console.log("Collections after fetch:", booksStore.books);
-    }, [booksStore]);
+    }, [collectionId, booksStore]);
 
     if (booksStore.isLoading) {
         return (
@@ -30,7 +30,7 @@ const CollectionPage: React.FC = observer(() => {
         )
     }
 
-    if (booksStore.error || collectionsStore.collections.length == 0) {
+    if (booksStore.error || booksStore.books.length == 0) {
         return (
             <Layout style={{minHeight: "100vh", backgroundColor: "#FFF9F0"}}>
                 <Header/>
@@ -47,7 +47,7 @@ const CollectionPage: React.FC = observer(() => {
             <Header/>
             <Content style={{ padding: "0 48px", marginTop: "90px" }}>
                 <div style={{ minHeight: 280, padding: 24, borderRadius: 10 }}>
-                    <BookList books={booksStore.books}/>
+                    <BookList books={booksStore.books} collectionTitle={booksStore.collectionName}/>
                 </div>
             </Content>
         </Layout>

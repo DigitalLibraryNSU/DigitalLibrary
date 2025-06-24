@@ -19,11 +19,14 @@ interface Book {
 }
 
 
+
+
 class BooksStore {
     books: Book[] = [];
     isLoading = false;
     error = null;
     apiAddress = getAddress;
+    collectionName: string;
 
 
     constructor() {
@@ -49,7 +52,7 @@ class BooksStore {
                 reviews_count: book.reviews_count,
                 score: book.score,
             }));
-            console.log("Processed books:", this.books);
+            this.collectionName = response.data.title;
         } catch (error: any) {
             this.error = error.message;
             console.error("Error fetching books:", error);
@@ -189,8 +192,8 @@ class BooksStore {
                 score: book.score,
             }));
         } catch (error: any) {
-            this.error = error.message;
-            console.error("Error fetching books:", error);
+            const data = error.response.data;
+            this.error = data.error;
         } finally {
             this.isLoading = false;
         }

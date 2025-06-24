@@ -21,9 +21,10 @@ interface Book {
 
 interface BookListProps {
     books: Book[];
+    collectionTitle?: string;
 }
 
-const BookList: React.FC<BookListProps> = ({ books }) => {
+const BookList: React.FC<BookListProps> = ({ books, collectionTitle }) => {
     const [sortOption, setSortOption] = useState<string>('default');
 
     // Функции сортировки
@@ -44,26 +45,35 @@ const BookList: React.FC<BookListProps> = ({ books }) => {
         <div style={{ padding: '20px' }}>
             <div style={{
                 display: 'flex',
-                justifyContent: 'flex-end',
+                justifyContent: 'space-between',
                 marginBottom: '20px',
                 alignItems: 'center'
             }}>
-                <span style={{ marginRight: '10px', fontFamily: 'PT Sans', color: '#5A3E36' }}>Сортировать по:</span>
-                <Select
-                    defaultValue="default"
-                    style={{ width: 200 }}
-                    onChange={(value) => setSortOption(value)}
-                    className="book-sorter"
-                >
-                    <Option value="default">По умолчанию</Option>
-                    <Option value="title_asc">Названию (А-Я)</Option>
-                    <Option value="title_desc">Названию (Я-А)</Option>
-                    <Option value="author_asc">Автору (А-Я)</Option>
-                    <Option value="author_desc">Автору (Я-А)</Option>
-                    <Option value="rating">Рейтингу</Option>
-                    <Option value="popularity">Количеству отзывов</Option>
-                    <Option value="score">Популярности</Option>
-                </Select>
+                <h1 style={{
+                    fontFamily: 'RuslanDisplay',
+                    fontSize: "42px",
+                    color: "#A52A2A",
+                    textAlign: "center",
+                    position: "relative"
+                }}>{collectionTitle ? collectionTitle : ""}</h1>
+                <div>
+                    <span style={{ marginRight: '10px', fontFamily: 'PT Sans', color: '#5A3E36' }}>Сортировать по:</span>
+                    <Select
+                        defaultValue="default"
+                        style={{ width: 200 }}
+                        onChange={(value) => setSortOption(value)}
+                        className="book-sorter"
+                    >
+                        <Option value="default">По умолчанию</Option>
+                        <Option value="title_asc">Названию (А-Я)</Option>
+                        <Option value="title_desc">Названию (Я-А)</Option>
+                        <Option value="author_asc">Автору (А-Я)</Option>
+                        <Option value="author_desc">Автору (Я-А)</Option>
+                        <Option value="rating">Рейтингу</Option>
+                        <Option value="popularity">Количеству отзывов</Option>
+                        <Option value="score">Популярности</Option>
+                    </Select>
+                </div>
             </div>
 
             <div style={{

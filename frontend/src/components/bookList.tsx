@@ -90,6 +90,7 @@ const BookList: React.FC<BookListProps> = ({ books, collectionTitle }) => {
                         author={book.author}
                         bookId={book.documentId}
                         img={book.image}
+                        avg_score={book.average_rating}
                     />
                 ))}
             </div>

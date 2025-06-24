@@ -85,4 +85,75 @@
     .book-card__cover-wrapper {
         height: 240px;
     }
+
+    .star {
+        font-size: 14px;
+    }
+
+    .rating-value {
+        font-size: 12px;
+    }
+}
+
+
+/* Стили для рейтинга */
+.book-rating {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    /*justify-content: center;*/
+}
+
+.star {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.full-star {
+    color: #FFD700; /* Золотой цвет для заполненных звёзд */
+}
+
+.star {
+    font-size: 20px;
+    color: #FFD700;
+    display: inline-block;
+    position: relative;
+}
+
+.full-star {
+    color: #FFD700;
+}
+
+.empty-star {
+    color: #dcdcdc;
+}
+
+.half-star {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    color: #FFF9F0;
+    border-radius: 50%;
+}
+
+.half-star::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #FFD700;
+}
+
+.empty-star {
+    color: #E0C9A6; /* Светлый цвет для пустых звёзд */
+}
+
+.rating-value {
+    margin-left: 6px;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 14px;
+    color: #5A3E36;
 }

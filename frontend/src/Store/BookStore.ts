@@ -13,6 +13,7 @@ interface Book {
     documentName: string;
     documentMime: string;
     documentUrl: string;
+    average_rating: number;
 }
 
 class BookStore {
@@ -41,7 +42,8 @@ class BookStore {
                 image: book.image ? this.apiAddress+`${book.image}` : '',
                 documentName: book.title ? this.apiAddress+`${book.title}` : '',
                 documentMime: book.book?.mime ? this.apiAddress+`${book.book.mime}` : '',
-                documentUrl: book.bookFile ? this.apiAddress+`${book.bookFile}` : ''
+                documentUrl: book.bookFile ? this.apiAddress+`${book.bookFile}` : '',
+                average_rating: book.average_rating,
             };
         } catch (error: any) {
             this.error = error.message;

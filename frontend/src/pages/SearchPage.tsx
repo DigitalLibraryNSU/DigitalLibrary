@@ -6,7 +6,7 @@ import * as React from "react";
 
 const SearchPage: React.FC = () => {
     return (
-        <Layout style={{minHeight: "100vh", padding: "100px", alignItems: "center", backgroundColor: "#FFF9F0"}}>
+        <Layout style={{height: "100vh", padding: "100px", alignItems: "center", backgroundColor: "#FFF9F0"}}>
         <Header/>
             <Content>
                 <Form/>

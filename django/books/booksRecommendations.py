@@ -166,7 +166,7 @@ def get_book_recommendations_for_user(user_id, limit=10):
     return recommended_books
 
 
-def getCollectionSuggestionsForBook(book_id, similarity_threshold=0.95, max_suggestions=5):
+def getCollectionSuggestionsForBook(book_id, similarity_threshold=0.96, max_suggestions=5):
     """
     Находит подходящие коллекции для книги на основе семантического сходства
     """
